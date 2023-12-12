@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Guest\RegistrationController;
 use App\Http\Controllers\Member\DashboardMemberController;
+use App\Http\Controllers\Member\ProfileMemberController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,4 +20,8 @@ Route::get('/', [RegistrationController::class, 'index'])->name('registration');
 
 Route::prefix('member')->group(function () {
     Route::get('dashboard', [DashboardMemberController::class, 'index'])->name('member.dashboard');
+
+    Route::prefix('profile')->group(function () {
+        Route::get('/', [ProfileMemberController::class, 'index'])->name('member.profile');
+    });
 });
