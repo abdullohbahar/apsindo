@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Guest\RegistrationController;
+use App\Http\Controllers\Member\DashboardMemberController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,3 +16,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [RegistrationController::class, 'index'])->name('registration');
+
+Route::prefix('member')->group(function () {
+    Route::get('dashboard', [DashboardMemberController::class, 'index'])->name('member.dashboard');
+});
