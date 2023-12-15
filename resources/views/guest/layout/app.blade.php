@@ -19,7 +19,7 @@
     @stack('addons-css')
 </head>
 
-<body style="background-color:rgb(243, 243, 243)">
+<body style="background-color:rgb(243, 243, 243)" hx-history-elt>
     <nav class="navbar bg-body-tertiary">
         <div class="container">
             <a class="navbar-brand" href="#">
