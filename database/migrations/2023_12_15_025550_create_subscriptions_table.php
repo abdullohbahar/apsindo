@@ -11,13 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('subscriptions', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('email');
-            $table->string('password');
-            $table->enum('role', ['admin', 'member']);
-            $table->string('reset_password_token')->nullable();
-            $table->enum('is_active', ['pending', 'active', 'inactive']);
+            $table->foreignUuid('user_id')->constrained();
+            $table->string('payment_status');
+            $table->date('date_start');
+            $table->date('date_end');
             $table->timestamps();
         });
     }
@@ -27,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('subscriptions');
     }
 };
