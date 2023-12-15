@@ -19,6 +19,13 @@
                         <div class="card-body">
                             <form action="">
                                 <div class="row">
+                                    @if (session()->has('success'))
+                                        <div class="col-12">
+                                            <div class="alert alert-success" role="alert">
+                                                Berhasil Melakukan Pendaftaran. Harap Melakukan Login
+                                            </div>
+                                        </div>
+                                    @endif
                                     <div class="col-sm-12">
                                         <div class="mb-3">
                                             <label for="" class="form-label">Email</label>

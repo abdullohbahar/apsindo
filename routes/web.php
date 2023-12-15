@@ -20,6 +20,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/registrasi', [RegistrationController::class, 'index'])->name('registration');
+Route::post('registrasi', [RegistrationController::class, 'store'])->name('save.registration');
+
 Route::get('/', [LoginController::class, 'index'])->name('login');
 Route::get('/reset-password', [LoginController::class, 'resetPassword'])->name('reset.password');
 

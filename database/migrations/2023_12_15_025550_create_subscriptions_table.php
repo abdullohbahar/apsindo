@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('subscriptions', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->foreignUuid('user_id')->constrained();
-            $table->string('payment_status');
-            $table->date('date_start');
-            $table->date('date_end');
+            $table->string('payment_status')->nullable();
+            $table->date('date_start')->nullable();
+            $table->date('date_end')->nullable();
             $table->timestamps();
         });
     }
