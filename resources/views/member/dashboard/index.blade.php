@@ -37,12 +37,13 @@
                                 <h5 class="m-0">Selamat Datang</h5>
                             </div>
                             <div class="card-body">
-                                <h5 class="card-text">
-                                    Cek email anda untuk mengetahui cara pembayaran anggota Asosiasi Pendidik Seni
-                                    Indonesia.
+                                <h5 class="card-text text-capitalize">
+                                    Anda Belum Aktif Menjadi Anggota, Silahkan melakukan pembayaran agar menjadi anggota
+                                    aktif dan mendapat kartu anggota digital
                                 </h5>
 
-                                <button class="btn btn-info mt-2">Lakukan Pembayaran</button>
+                                <a href="{{ route('member.payment.page') }}" class="btn btn-info mt-2">Lakukan
+                                    Pembayaran</a>
                             </div>
                         </div>
                     </div>
@@ -56,4 +57,23 @@
 @endsection
 
 @push('addons-js')
+    <script type="text/javascript" src="https://app.sandbox.midtrans.com/snap/snap.js"
+        data-client-key="{{ config('midtrans.clientKey') }}"></script>
+
+    <script>
+        $("#payButton").on("click", async function() {
+            try {
+                const response = await fetch('payment/payment', {
+                    method: 'GET',
+                });
+
+                const token = await response.text();
+
+                window.snap.pay(token.replace(/"/g, ''))
+
+            } catch (error) {
+                alert(error.message);
+            }
+        })
+    </script>
 @endpush

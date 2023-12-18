@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\MemberController;
 use App\Http\Controllers\Guest\LoginController;
 use App\Http\Controllers\Guest\RegistrationController;
 use App\Http\Controllers\Member\DashboardMemberController;
+use App\Http\Controllers\Member\PaymentController;
 use App\Http\Controllers\Member\ProfileMemberController;
 use Illuminate\Support\Facades\Route;
 
@@ -30,6 +31,11 @@ Route::prefix('member')->group(function () {
 
     Route::prefix('profile')->group(function () {
         Route::get('/', [ProfileMemberController::class, 'index'])->name('member.profile');
+    });
+
+    Route::prefix('payment')->group(function () {
+        Route::get('/', [PaymentController::class, 'index'])->name('member.payment.page');
+        Route::get('/payment', [PaymentController::class, 'payment'])->name('member.payment');
     });
 });
 

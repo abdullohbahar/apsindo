@@ -18,6 +18,7 @@ return new class extends Migration
             $table->date('date_start')->nullable();
             $table->date('date_end')->nullable();
             $table->bigInteger('total_price');
+            $table->string('metode_pembayaran');
             $table->timestamps();
         });
     }
