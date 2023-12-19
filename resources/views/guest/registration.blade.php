@@ -18,8 +18,7 @@
                             <h3>Asosiasi Pendidik Seni Indonesia</h3>
                         </div>
                         <div class="card-body">
-                            <form hx-post="{{ route('save.registration') }}" hx-target="body" method="POST"
-                                enctype="multipart/form-data" hx-push-url="true">
+                            <form action="{{ route('save.registration') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <div class="row">
                                     <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6">
@@ -163,8 +162,7 @@
                                     </div>
                                     <div class="col-12 mt-3 text-center">
                                         <h6>
-                                            Sudah Punya Akun? <a href="" hx-get="{{ route('login') }}"
-                                                hx-push-url="true" hx-target="body" hx-history-elt>Login</a>
+                                            Sudah Punya Akun? <a href="{{ route('login') }}">Login</a>
                                         </h6>
                                     </div>
                                 </div>

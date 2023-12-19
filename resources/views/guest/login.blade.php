@@ -56,13 +56,11 @@
                                     </div>
                                     <div class="col-12 mt-3 text-center">
                                         <h6>
-                                            Ingin mendaftar jadi anggota APSINDO? <a href=""
-                                                hx-get="{{ route('registration') }}" hx-push-url="true" hx-target="body"
-                                                hx-history-elt>Daftar</a>
+                                            Ingin mendaftar jadi anggota APSINDO? <a
+                                                href="{{ route('registration') }}">Daftar</a>
                                         </h6>
                                         <h6>
-                                            Lupa Password? <a href="" hx-get="{{ route('reset.password') }}"
-                                                hx-push-url="true" hx-target="body" hx-history-elt>Reset Password</a>
+                                            Lupa Password? <a href="{{ route('reset.password') }}">Reset Password</a>
                                         </h6>
                                     </div>
                                 </div>

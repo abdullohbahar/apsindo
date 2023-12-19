@@ -7,6 +7,7 @@ use App\Http\Controllers\Guest\RegistrationController;
 use App\Http\Controllers\Member\DashboardMemberController;
 use App\Http\Controllers\Member\PaymentController;
 use App\Http\Controllers\Member\ProfileMemberController;
+use App\Http\Controllers\Member\TransactionHistoryMemberController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -31,10 +32,13 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('logout')->middl
 Route::prefix('member')->middleware('member')->group(function () {
     Route::get('dashboard', [DashboardMemberController::class, 'index'])->name('member.dashboard');
 
-
     Route::prefix('payment')->group(function () {
         Route::get('/', [PaymentController::class, 'index'])->name('member.payment.page');
         Route::get('/payment', [PaymentController::class, 'payment'])->name('member.payment');
+    });
+
+    Route::prefix('riwayat-transaksi')->group(function () {
+        Route::get('/', [TransactionHistoryMemberController::class, 'index'])->name('riwayat');
     });
 });
 
