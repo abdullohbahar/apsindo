@@ -17,28 +17,37 @@
                             <h3>Login Asosiasi Pendidik Seni Indonesia</h3>
                         </div>
                         <div class="card-body">
-                            <form action="">
+                            <form action="{{ route('auth') }}" method="POST">
+                                @csrf
                                 <div class="row">
-                                    @if (session()->has('success'))
+                                    @if (session()->has('successDaftar'))
                                         <div class="col-12">
                                             <div class="alert alert-success" role="alert">
                                                 Berhasil Melakukan Pendaftaran. Harap Melakukan Login
                                             </div>
                                         </div>
                                     @endif
+                                    @if (session()->has('error'))
+                                        <div class="col-12">
+                                            <div class="alert alert-danger" role="alert">
+                                                Email atau Password Salah
+                                            </div>
+                                        </div>
+                                    @endif
                                     <div class="col-sm-12">
                                         <div class="mb-3">
-                                            <label for="" class="form-label">Email</label>
+                                            <label for="email" class="form-label">Email</label>
                                             <input type="email" class="form-control" name="email"
-                                                placeholder="Alamat Email" id="" autocomplete="url" required>
+                                                value="{{ old('email') }}" placeholder="Alamat Email" id="email"
+                                                required>
                                         </div>
                                     </div>
 
                                     <div class="col-sm-12">
                                         <div class="mb-3">
-                                            <label for="" class="form-label">Password</label>
+                                            <label for="password" class="form-label">Password</label>
                                             <input type="password" class="form-control" name="password"
-                                                placeholder="Password" id="" required>
+                                                placeholder="Password" id="password" required>
                                         </div>
                                     </div>
                                     <div class="col-12">

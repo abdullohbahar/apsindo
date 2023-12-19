@@ -182,6 +182,32 @@
     <script src="{{ asset('./guest-assets/js/provinsi.js') }}"></script>
 
     <script>
+        imageUpload.onchange = (evt) => {
+            const [file] = imageUpload.files;
+            if (file) {
+                // Batasan ukuran file (2MB)
+                const maxSizeInBytes = 2 * 1024 * 1024; // 2MB
+                if (file.size <= maxSizeInBytes) {
+                    // Batasan jenis file (PNG, JPG, JPEG)
+                    const allowedExtensions = ["png", "jpg", "jpeg", "webp"];
+                    const fileExtension = file.name.split(".").pop().toLowerCase();
+                    if (allowedExtensions.includes(fileExtension)) {
+                        imagePreview.src = URL.createObjectURL(file);
+                    } else {
+                        alert(
+                            "Jenis file yang diunggah tidak diizinkan. Harap pilih file dengan format PNG, JPG, atau JPEG."
+                        );
+                        imageUpload.value = null; // Menghapus file yang dipilih
+                    }
+                } else {
+                    alert("Ukuran file terlalu besar. Harap pilih file dengan ukuran maksimal 2MB.");
+                    imageUpload.value = null; // Menghapus file yang dipilih
+                }
+            }
+        };
+    </script>
+
+    <script>
         // Temukan elemen yang ingin diarahkan berdasarkan class
         var targetElements = document.getElementsByClassName("is-invalid");
 

@@ -45,32 +45,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
         integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-    <script>
-        imageUpload.onchange = (evt) => {
-            const [file] = imageUpload.files;
-            if (file) {
-                // Batasan ukuran file (2MB)
-                const maxSizeInBytes = 2 * 1024 * 1024; // 2MB
-                if (file.size <= maxSizeInBytes) {
-                    // Batasan jenis file (PNG, JPG, JPEG)
-                    const allowedExtensions = ["png", "jpg", "jpeg", "webp"];
-                    const fileExtension = file.name.split(".").pop().toLowerCase();
-                    if (allowedExtensions.includes(fileExtension)) {
-                        imagePreview.src = URL.createObjectURL(file);
-                    } else {
-                        alert(
-                            "Jenis file yang diunggah tidak diizinkan. Harap pilih file dengan format PNG, JPG, atau JPEG."
-                        );
-                        imageUpload.value = null; // Menghapus file yang dipilih
-                    }
-                } else {
-                    alert("Ukuran file terlalu besar. Harap pilih file dengan ukuran maksimal 2MB.");
-                    imageUpload.value = null; // Menghapus file yang dipilih
-                }
-            }
-        };
-    </script>
     <script src="https://unpkg.com/htmx.org@1.9.9"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 

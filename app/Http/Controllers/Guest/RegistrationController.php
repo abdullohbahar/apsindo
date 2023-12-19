@@ -66,7 +66,7 @@ class RegistrationController extends Controller
 
             DB::commit();
 
-            return redirect()->route('login')->with('success', 'Berhasil Melakukan Pendaftaran');
+            return redirect()->route('login')->with('successDaftar', 'Berhasil Melakukan Pendaftaran');
         } catch (Exception $e) {
             return redirect()->back()->with('error', 'Gagal Melakukan Pendaftaran');
         }

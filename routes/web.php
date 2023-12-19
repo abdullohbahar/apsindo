@@ -24,6 +24,7 @@ Route::get('/registrasi', [RegistrationController::class, 'index'])->name('regis
 Route::post('registrasi', [RegistrationController::class, 'store'])->name('save.registration');
 
 Route::get('/', [LoginController::class, 'index'])->name('login');
+Route::post('/auth', [LoginController::class, 'authenticate'])->name('auth');
 Route::get('/reset-password', [LoginController::class, 'resetPassword'])->name('reset.password');
 
 Route::prefix('member')->group(function () {
