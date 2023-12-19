@@ -68,7 +68,6 @@ class RegistrationController extends Controller
 
             return redirect()->route('login')->with('success', 'Berhasil Melakukan Pendaftaran');
         } catch (Exception $e) {
-            dd($e);
             return redirect()->back()->with('error', 'Gagal Melakukan Pendaftaran');
         }
     }

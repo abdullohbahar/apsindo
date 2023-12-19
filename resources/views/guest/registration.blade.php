@@ -5,6 +5,7 @@
 @endsection
 
 @push('addons-css')
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 @endpush
 
 @section('content')
@@ -26,7 +27,7 @@
                                             <label for="" class="form-label">NIDN</label>
                                             <input type="text" class="form-control @error('nidn') is-invalid @enderror"
                                                 value="{{ old('nidn') }}" name="nidn" placeholder="NIDN"
-                                                id="">
+                                                id="nidn">
                                             @error('nidn')
                                                 <div class="invalid-feedback">
                                                     {{ $message }}
@@ -39,7 +40,7 @@
                                             <label for="" class="form-label">Email</label>
                                             <input type="email" class="form-control @error('email') is-invalid @enderror"
                                                 name="email" value="{{ old('email') }}" placeholder="Alamat Email"
-                                                id="">
+                                                id="email">
                                             @error('email')
                                                 <div class="invalid-feedback">
                                                     {{ $message }}
@@ -53,7 +54,7 @@
                                             <input type="text"
                                                 class="form-control @error('nama_lengkap') is-invalid @enderror"
                                                 name="nama_lengkap" value="{{ old('nama_lengkap') }}"
-                                                placeholder="Nama Lengkap" id="">
+                                                placeholder="Nama Lengkap" id="nama_lengkap">
                                             @error('nama_lengkap')
                                                 <div class="invalid-feedback">
                                                     {{ $message }}
@@ -67,7 +68,7 @@
                                             <input type="text"
                                                 class="form-control @error('no_telepon') is-invalid @enderror"
                                                 name="no_telepon" value="{{ old('no_telepon') }}"
-                                                placeholder="Nomor Telepon" id="">
+                                                placeholder="Nomor Telepon" id="no_telepon">
                                             @error('no_telepon')
                                                 <div class="invalid-feedback">
                                                     {{ $message }}
@@ -80,7 +81,7 @@
                                             <label for="" class="form-label">Password</label>
                                             <input type="password"
                                                 class="form-control @error('password') is-invalid @enderror" name="password"
-                                                placeholder="Password" id="" autocomplete="new-password">
+                                                placeholder="Password" id="password" autocomplete="new-password">
                                             @error('password')
                                                 <div class="invalid-feedback">
                                                     {{ $message }}
@@ -94,7 +95,7 @@
                                             <input type="password"
                                                 class="form-control @error('password_confirmation') is-invalid @enderror"
                                                 name="password_confirmation" placeholder="Konfirmasi Password"
-                                                id="">
+                                                id="password_confirmation">
                                             @error('password_confirmation')
                                                 <div class="invalid-feedback">
                                                     {{ $message }}
@@ -116,13 +117,10 @@
                                     <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6">
                                         <div class="mb-3">
                                             <label for="" class="form-label">Provinsi</label>
-                                            <select name="provinsi" id=""
-                                                class="form-control @error('provinsi') is-invalid @enderror">
-                                                <option value="">-- Pilih Provinsi --</option>
-                                                <option value="Yogyakarta"
-                                                    {{ old('provinsi') == 'Yogyakarta' ? 'selected' : '' }}>Yogyakarta
-                                                </option>
+                                            <select name="" id="provinsi" required
+                                                class="select2-data-array browser-default @error('provinsi') is-invalid @enderror">
                                             </select>
+                                            <input type="hidden" name="provinsi" id="hiddenProv">
                                             @error('provinsi')
                                                 <div class="invalid-feedback">
                                                     {{ $message }}
@@ -180,6 +178,9 @@
 @endsection
 
 @push('addons-js')
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="{{ asset('./guest-assets/js/provinsi.js') }}"></script>
+
     <script>
         // Temukan elemen yang ingin diarahkan berdasarkan class
         var targetElements = document.getElementsByClassName("is-invalid");
