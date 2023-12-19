@@ -20,20 +20,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/registrasi', [RegistrationController::class, 'index'])->name('registration');
-Route::post('registrasi', [RegistrationController::class, 'store'])->name('save.registration');
+Route::get('/registrasi', [RegistrationController::class, 'index'])->name('registration')->middleware('guest');
+Route::post('registrasi', [RegistrationController::class, 'store'])->name('save.registration')->middleware('guest');
 
-Route::get('/', [LoginController::class, 'index'])->name('login');
-Route::post('/auth', [LoginController::class, 'authenticate'])->name('auth');
-Route::get('/reset-password', [LoginController::class, 'resetPassword'])->name('reset.password');
+Route::get('/', [LoginController::class, 'index'])->name('login')->middleware('guest');
+Route::post('/auth', [LoginController::class, 'authenticate'])->name('auth')->middleware('guest');
+Route::get('/reset-password', [LoginController::class, 'resetPassword'])->name('reset.password')->middleware('guest');
+Route::get('/logout', [LoginController::class, 'logout'])->name('logout')->middleware('auth');
 
-Route::prefix('member')->group(function () {
+Route::prefix('member')->middleware('member')->group(function () {
     Route::get('dashboard', [DashboardMemberController::class, 'index'])->name('member.dashboard');
 
-    Route::prefix('profile')->group(function () {
-        Route::get('/', [ProfileMemberController::class, 'index'])->name('member.profile');
-        Route::put('/update/{id}', [ProfileMemberController::class, 'update'])->name('member.profile.update');
-    });
 
     Route::prefix('payment')->group(function () {
         Route::get('/', [PaymentController::class, 'index'])->name('member.payment.page');
@@ -41,7 +38,12 @@ Route::prefix('member')->group(function () {
     });
 });
 
-Route::prefix('admin')->group(function () {
+Route::prefix('profile')->middleware('auth')->group(function () {
+    Route::get('/', [ProfileMemberController::class, 'index'])->name('member.profile');
+    Route::put('/update/{id}', [ProfileMemberController::class, 'update'])->name('member.profile.update');
+});
+
+Route::prefix('admin')->middleware('admin')->group(function () {
     Route::get('dashboard', [DashboardAdminController::class, 'index'])->name('admin.dashboard');
 
     Route::prefix('member')->group(function () {

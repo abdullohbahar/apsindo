@@ -1,4 +1,4 @@
-@extends('member.layout.app')
+@extends(auth()->user()->role == 'member' ? 'member.layout.app' : 'admin.layout.app')
 
 @section('title')
     Profile
@@ -335,7 +335,7 @@
 
                 $(`#provinsi`).trigger("change");
             }
-        }, 1000);
+        }, 3000);
     </script>
 
     <script>
