@@ -9,7 +9,7 @@ class PaymentSetting extends Model
 {
     use HasFactory;
 
-    protected $fillable [ 
+    protected $fillable = [
         'date_range',
         'price'
     ];
