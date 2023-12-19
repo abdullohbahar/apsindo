@@ -57,12 +57,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <!-- /.navbar -->
 
         <!-- Main Sidebar Container -->
-        <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <aside class="main-sidebar sidebar-dark-primary elevation-4" style="background-color: #3C49B5;">
             <!-- Brand Logo -->
-            <a href="index3.html" class="brand-link">
-                <img src="{{ asset('./dashboard-assets/dist/img/AdminLTELogo.png') }}" alt="AdminLTE Logo"
-                    class="brand-image img-circle elevation-3" style="opacity: .8">
-                <span class="brand-text font-weight-light">APSINDO</span>
+            <a href="{{ route('member.dashboard') }}" class="brand-link">
+                <img src="https://apsindo.org/wp-content/uploads/2023/12/Screenshot_48_waifu2x_photo_noise3_scale_waifu2x_photo_noise3_scale-1.png"
+                    alt="AdminLTE Logo" class="brand-image" style="opacity: .8">
+                <span class="brand-text font-weight-bold">APSINDO</span>
             </a>
 
             <!-- Sidebar -->
@@ -70,11 +70,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <!-- Sidebar user panel (optional) -->
                 <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                     <div class="image">
-                        <img src="{{ asset('./guest-assets/dummy-profile.jpg') }}" class="img-circle elevation-2"
+                        <img src="{{ asset(auth()->user()->profile->foto) }}" class="img-circle elevation-2"
                             alt="User Image">
                     </div>
                     <div class="info">
-                        <a href="#" class="d-block">Alexander Pierce</a>
+                        <a href="#"
+                            class="d-block font-weight-bold">{{ auth()->user()->profile->nama_lengkap }}</a>
                     </div>
                 </div>
 
