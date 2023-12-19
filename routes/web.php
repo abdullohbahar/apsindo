@@ -1,5 +1,12 @@
 <?php
 
+use App\Http\Controllers\Admin\DashboardAdminController;
+use App\Http\Controllers\Admin\MemberController;
+use App\Http\Controllers\Guest\LoginController;
+use App\Http\Controllers\Guest\RegistrationController;
+use App\Http\Controllers\Member\DashboardMemberController;
+use App\Http\Controllers\Member\PaymentController;
+use App\Http\Controllers\Member\ProfileMemberController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +20,31 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/registrasi', [RegistrationController::class, 'index'])->name('registration');
+Route::post('registrasi', [RegistrationController::class, 'store'])->name('save.registration');
+
+Route::get('/', [LoginController::class, 'index'])->name('login');
+Route::post('/auth', [LoginController::class, 'authenticate'])->name('auth');
+Route::get('/reset-password', [LoginController::class, 'resetPassword'])->name('reset.password');
+
+Route::prefix('member')->group(function () {
+    Route::get('dashboard', [DashboardMemberController::class, 'index'])->name('member.dashboard');
+
+    Route::prefix('profile')->group(function () {
+        Route::get('/', [ProfileMemberController::class, 'index'])->name('member.profile');
+        Route::put('/update/{id}', [ProfileMemberController::class, 'update'])->name('member.profile.update');
+    });
+
+    Route::prefix('payment')->group(function () {
+        Route::get('/', [PaymentController::class, 'index'])->name('member.payment.page');
+        Route::get('/payment', [PaymentController::class, 'payment'])->name('member.payment');
+    });
+});
+
+Route::prefix('admin')->group(function () {
+    Route::get('dashboard', [DashboardAdminController::class, 'index'])->name('admin.dashboard');
+
+    Route::prefix('member')->group(function () {
+        Route::get('/', [MemberController::class, 'index'])->name('admin.member');
+    });
 });
