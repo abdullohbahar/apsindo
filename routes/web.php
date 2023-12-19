@@ -32,6 +32,7 @@ Route::prefix('member')->group(function () {
 
     Route::prefix('profile')->group(function () {
         Route::get('/', [ProfileMemberController::class, 'index'])->name('member.profile');
+        Route::put('/update/{id}', [ProfileMemberController::class, 'update'])->name('member.profile.update');
     });
 
     Route::prefix('payment')->group(function () {
