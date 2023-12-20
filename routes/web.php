@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\DashboardAdminController;
 use App\Http\Controllers\Admin\MemberController;
+use App\Http\Controllers\Admin\PaymentSettingController;
 use App\Http\Controllers\Guest\LoginController;
 use App\Http\Controllers\Guest\RegistrationController;
 use App\Http\Controllers\Member\DashboardMemberController;
@@ -53,5 +54,10 @@ Route::prefix('admin')->middleware('admin')->group(function () {
     Route::prefix('member')->group(function () {
         Route::get('/', [MemberController::class, 'index'])->name('admin.member');
         Route::get('/detail/{id}', [MemberController::class, 'detail'])->name('admin.member.detail');
+    });
+
+    Route::prefix('settings')->group(function () {
+        Route::get('/langganan', [PaymentSettingController::class, 'index'])->name('pengaturan.langganan');
+        Route::post('/update-langganan', [PaymentSettingController::class, 'store'])->name('update.pengaturan.langganan');
     });
 });

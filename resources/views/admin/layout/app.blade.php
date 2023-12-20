@@ -118,6 +118,26 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 </p>
                             </a>
                         </li>
+                        <li class="nav-item {{ $active == 'pengaturan-langganan' ? 'menu-open' : '' }}">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-cog"></i>
+                                <p>
+                                    Pengaturan
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview ml-2">
+                                <li class="nav-item">
+                                    <a href="{{ route('pengaturan.langganan') }}"
+                                        class="nav-link {{ $active == 'pengaturan-langganan' ? 'active' : '' }}">
+                                        <i class="nav-icon far fa-dot-circle"></i>
+                                        <p>
+                                            Langganan
+                                        </p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
                         <hr>
                         <li class="nav-item">
                             <a href="{{ route('logout') }}" class="nav-link">
