@@ -16,7 +16,11 @@ class RegistrationController extends Controller
 {
     public function index()
     {
-        return view('guest.registration');
+        $data = [
+            'title' => 'Registrasi Anggota APSI'
+        ];
+
+        return view('guest.registration', $data);
     }
 
     public function store(Request $request)

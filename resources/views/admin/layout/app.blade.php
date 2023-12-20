@@ -8,7 +8,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Admin - @yield('title')</title>
+    <title>@yield('title') - Admin</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
@@ -62,7 +62,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <a href="index3.html" class="brand-link">
                 <img src="https://apsindo.org/wp-content/uploads/2023/12/Screenshot_48_waifu2x_photo_noise3_scale_waifu2x_photo_noise3_scale-1.png"
                     alt="AdminLTE Logo" class="brand-image" style="opacity: .8">
-                <span class="brand-text font-weight-bold">APSINDO</span>
+                <span class="brand-text font-weight-bold">APSI</span>
             </a>
 
             <!-- Sidebar -->
