@@ -13,11 +13,17 @@ class TransactionHistoryMemberController extends Controller
     public function index()
     {
         if (request()->ajax()) {
-            $query = Subscription::with('user.profile')->where('user_id', auth()->user()->id)->orderBy('created_at', 'desc')->get();
+            $query = Subscription::with('user.profile', 'paymentSetting')->where('user_id', auth()->user()->id)->orderBy('created_at', 'desc')->get();
 
             return Datatables::of($query)
                 ->addColumn('total_price', function ($item) {
-                    return 'Rp ' . number_format($item->total_price, 0, '', '.');
+                    if ($item->amount) {
+                        $price = number_format($item->amount, 0, '', '.');
+                    } else {
+                        $price = number_format($item->paymentSetting->price, 0, '', '.');
+                    }
+
+                    return 'Rp ' . $price;
                 })
                 ->addColumn('action', function ($item) {
                     if ($item->payment_status == 'unpaid') {

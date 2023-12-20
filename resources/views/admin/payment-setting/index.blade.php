@@ -50,8 +50,8 @@
                             <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
                                 <label for="">Harga</label>
                                 <input type="text" name="price" class="form-control"
-                                    value="{{ 'Rp ' . number_format($paymentSetting->price, 0, '', '.') ?? $paymentSetting['price'] }}"
-                                    id="" required>
+                                    value="{{ $paymentSetting->price ?? $paymentSetting['price'] }}" id=""
+                                    required>
                             </div>
                             <div class="col-12 mt-3">
                                 <button class="btn btn-success">Ubah</button>

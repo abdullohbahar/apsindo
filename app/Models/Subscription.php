@@ -18,4 +18,9 @@ class Subscription extends Model
     {
         return $this->hasOne(User::class, 'id', 'user_id');
     }
+
+    public function paymentSetting(): HasOne
+    {
+        return $this->hasOne(PaymentSetting::class, 'id', 'payment_settings_id');
+    }
 }

@@ -16,7 +16,7 @@ class PaymentSettingController extends Controller
 
         $paymentSetting = PaymentSetting::first();
 
-        if ($paymentSetting->count() > 0) {
+        if ($paymentSetting) {
             $data['paymentSetting'] = $paymentSetting;
         } else {
             $data['paymentSetting'] = [
@@ -40,6 +40,7 @@ class PaymentSettingController extends Controller
             ]);
         } else {
             PaymentSetting::where('id', $request->id)->update([
+                'id' => 1,
                 'date_range' => $request->date_range,
                 'price' => $price
             ]);

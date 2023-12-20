@@ -47,7 +47,7 @@
                                             <th>Email</th>
                                             <th>No Telepon</th> --}}
                                             <th>Keterangan</th>
-                                            <th>Tanggal Subscribe</th>
+                                            <th>Tanggal Langganan</th>
                                             <th>Tanggal Berakhir</th>
                                             <th>Harga</th>
                                             <th>Metode Pembayaran</th>

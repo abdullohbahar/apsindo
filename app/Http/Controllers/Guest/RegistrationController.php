@@ -7,6 +7,7 @@ use App\Models\Profile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\PaymentSetting;
 use App\Models\Subscription;
 use Exception;
 use Illuminate\Support\Facades\Auth;
@@ -72,7 +73,7 @@ class RegistrationController extends Controller
             Subscription::create([
                 'user_id' => $saveUser->id,
                 'information' => 'Langganan Awal',
-                'total_price' => 90000,
+                'payment_settings_id' => 1,
                 'metode_pembayaran' => '-',
                 'payment_status' => 'unpaid'
             ]);
