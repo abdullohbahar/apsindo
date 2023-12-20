@@ -8,7 +8,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Member | @yield('title')</title>
+    <title>@yield('title') - Member</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
@@ -47,7 +47,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             <i class="fas fa-user mr-2"></i> Profile
                         </a>
                         <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">
+                        <a href="{{ route('logout') }}" class="dropdown-item">
                             <i class="fas fa-sign-out-alt mr-2"></i> Logout
                         </a>
                     </div>
@@ -62,7 +62,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <a href="{{ route('member.dashboard') }}" class="brand-link">
                 <img src="https://apsindo.org/wp-content/uploads/2023/12/Screenshot_48_waifu2x_photo_noise3_scale_waifu2x_photo_noise3_scale-1.png"
                     alt="AdminLTE Logo" class="brand-image" style="opacity: .8">
-                <span class="brand-text font-weight-bold">APSINDO</span>
+                <span class="brand-text font-weight-bold">APSI</span>
             </a>
 
             <!-- Sidebar -->
@@ -70,12 +70,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <!-- Sidebar user panel (optional) -->
                 <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                     <div class="image">
-                        <img src="{{ asset(auth()->user()->profile->foto) }}" class="img-circle elevation-2"
+                        <img src="{{ asset(auth()->user()->profile?->foto ?? '-') }}" class="img-circle elevation-2"
                             alt="User Image">
                     </div>
                     <div class="info">
                         <a href="#"
-                            class="d-block font-weight-bold">{{ auth()->user()->profile->nama_lengkap }}</a>
+                            class="d-block font-weight-bold">{{ auth()->user()->profile?->nama_lengkap }}</a>
                     </div>
                 </div>
 
@@ -101,7 +101,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{ route('riwayat') }}"
+                                class="nav-link {{ $active == 'riwayat' ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-file-invoice"></i>
                                 <p>
                                     Riwayat Pembayaran
@@ -119,7 +120,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         </li>
                         <hr>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{ route('logout') }}" class="nav-link">
                                 <i class="nav-icon fas fa-sign-out-alt"></i>
                                 <p>
                                     Logout

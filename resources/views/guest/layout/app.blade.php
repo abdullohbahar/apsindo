@@ -14,22 +14,39 @@
         .form-label {
             font-weight: bold;
         }
+
+        .nav-link {
+            color: white !important;
+            font-weight: 700;
+        }
+
+        .center-div {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+        }
     </style>
+
 
     @stack('addons-css')
 </head>
 
-<body style="background-color:rgb(243, 243, 243)" hx-history-elt>
-    <nav class="navbar bg-body-tertiary">
+<body style="background-color:rgb(243, 243, 243)">
+    <nav class="navbar bg-dark navbar-expand-lg" style="background-color: #3C49B5 !important;" data-bs-theme="dark">
         <div class="container">
-            <a class="navbar-brand" href="#">
-                <img src="https://getbootstrap.com/docs/5.3/assets/brand/bootstrap-logo.svg" alt="Logo"
-                    width="30" height="24" class="d-inline-block align-text-top">
-                Bootstrap
-            </a>
-            {{-- <div>
-                asdf
-            </div> --}}
+            <a class="navbar-brand" href="#">Login Anggota APSI</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav ms-auto">
+                    <a class="nav-link" aria-current="page" href="https://apsindo.org/">Home</a>
+                    <a class="nav-link" href="{{ route('registration') }}">Daftar</a>
+                    <a class="nav-link" href="{{ route('login') }}">Login</a>
+                </div>
+            </div>
         </div>
     </nav>
 

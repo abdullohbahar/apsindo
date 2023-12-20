@@ -168,7 +168,8 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        Bugsnag\BugsnagLaravel\BugsnagServiceProvider::class
+        Bugsnag\BugsnagLaravel\BugsnagServiceProvider::class,
+        Yajra\DataTables\DataTablesServiceProvider::class,
 
     ])->toArray(),
 

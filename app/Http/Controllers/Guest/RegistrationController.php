@@ -7,6 +7,8 @@ use App\Models\Profile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\PaymentSetting;
+use App\Models\Subscription;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -15,7 +17,11 @@ class RegistrationController extends Controller
 {
     public function index()
     {
-        return view('guest.registration');
+        $data = [
+            'title' => 'Registrasi Anggota APSI'
+        ];
+
+        return view('guest.registration', $data);
     }
 
     public function store(Request $request)
@@ -64,10 +70,19 @@ class RegistrationController extends Controller
                 'foto' => $foto
             ]);
 
+            Subscription::create([
+                'user_id' => $saveUser->id,
+                'information' => 'Langganan Awal',
+                'payment_settings_id' => 1,
+                'metode_pembayaran' => '-',
+                'payment_status' => 'unpaid'
+            ]);
+
             DB::commit();
 
             return redirect()->route('login')->with('successDaftar', 'Berhasil Melakukan Pendaftaran');
         } catch (Exception $e) {
+            dd($e);
             return redirect()->back()->with('error', 'Gagal Melakukan Pendaftaran');
         }
     }

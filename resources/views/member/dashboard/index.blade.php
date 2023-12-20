@@ -42,7 +42,7 @@
                                     aktif dan mendapat kartu anggota digital
                                 </h5>
 
-                                <a href="{{ route('member.payment.page') }}" class="btn btn-info mt-2">Lakukan
+                                <a href="{{ route('riwayat') }}" class="btn btn-info mt-2">Lakukan
                                     Pembayaran</a>
                             </div>
                         </div>

@@ -10,7 +10,11 @@ class LoginController extends Controller
 {
     public function index()
     {
-        return view('guest.login');
+        $data = [
+            'title' => 'Login Anggota APSI'
+        ];
+
+        return view('guest.login', $data);
     }
 
     public function authenticate(Request $request)
@@ -51,6 +55,21 @@ class LoginController extends Controller
 
     public function resetPassword()
     {
-        return view('guest.reset-password');
+        $data = [
+            'title' => 'Reset Password'
+        ];
+
+        return view('guest.reset-password', $data);
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        return redirect('/')->with('success', 'Logout Successfully');
     }
 }

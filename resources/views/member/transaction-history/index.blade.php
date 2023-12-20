@@ -1,4 +1,4 @@
-@extends('admin.layout.app')
+@extends('member.layout.app')
 
 @section('title')
     Dashboard
@@ -43,10 +43,15 @@
                                     <thead>
                                         <tr>
                                             <th>No</th>
-                                            <th>Nama Lengkap</th>
+                                            {{-- <th>Nama Lengkap</th>
                                             <th>Email</th>
-                                            <th>No Telepon</th>
-                                            <th>Status</th>
+                                            <th>No Telepon</th> --}}
+                                            <th>Keterangan</th>
+                                            <th>Tanggal Langganan</th>
+                                            <th>Tanggal Berakhir</th>
+                                            <th>Harga</th>
+                                            <th>Metode Pembayaran</th>
+                                            <th>Status Pembayaran</th>
                                             <th>Aksi</th>
                                         </tr>
                                     </thead>
@@ -103,21 +108,41 @@
                         return meta.row + meta.settings._iDisplayStart + 1;
                     },
                 },
+                // {
+                //     data: "nama_lengkap",
+                //     name: "nama_lengkap",
+                // },
+                // {
+                //     data: "email",
+                //     name: "email",
+                // },
+                // {
+                //     data: "no_telepon",
+                //     name: "no_telepon",
+                // },
                 {
-                    data: "nama_lengkap",
-                    name: "nama_lengkap",
+                    data: "information",
+                    name: "information",
                 },
                 {
-                    data: "email",
-                    name: "email",
+                    data: "date_start",
+                    name: "date_start",
                 },
                 {
-                    data: "no_telepon",
-                    name: "no_telepon",
+                    data: "date_end",
+                    name: "date_end",
                 },
                 {
-                    data: "is_active",
-                    name: "is_active",
+                    data: "total_price",
+                    name: "total_price",
+                },
+                {
+                    data: "metode_pembayaran",
+                    name: "metode_pembayaran",
+                },
+                {
+                    data: "payment_status",
+                    name: "payment_status",
                 },
                 {
                     data: "action",
