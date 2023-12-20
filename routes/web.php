@@ -38,7 +38,7 @@ Route::prefix('member')->middleware('member')->group(function () {
         Route::get('/payment', [PaymentController::class, 'payment'])->name('member.payment');
     });
 
-    Route::prefix('riwayat-transaksi')->group(function () {
+    Route::prefix('riwayat-pembayaran')->group(function () {
         Route::get('/', [TransactionHistoryMemberController::class, 'index'])->name('riwayat');
     });
 });
