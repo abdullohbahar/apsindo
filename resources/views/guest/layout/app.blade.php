@@ -19,6 +19,13 @@
             color: white !important;
             font-weight: 700;
         }
+
+        .center-div {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+        }
     </style>
 
 

@@ -14,8 +14,25 @@
             <div class="row justify-content-center">
                 <div class="col-sm-12 col-md-9">
                     <div class="card">
-                        <div class="card-header text-center">
-                            <h3>Asosiasi Pendidik Seni Indonesia</h3>
+                        <div class="card-header" style="background-color: #3C49B5">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="row">
+                                        <div class="col-3">
+                                            <div class="center-div">
+                                                <img src="https://apsindo.org/wp-content/uploads/2023/12/Screenshot_48_waifu2x_photo_noise3_scale_waifu2x_photo_noise3_scale-1.png"
+                                                    alt="" srcset="" class="w-100 img-fluid">
+                                            </div>
+                                        </div>
+                                        <div class="col-9">
+                                            <div class="center-div">
+                                                <h4 class="text-white text-center"><b>Registrasi Asosiasi Pendidik Seni
+                                                        Indonesia</b></h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="card-body">
                             <form action="{{ route('save.registration') }}" method="POST" enctype="multipart/form-data">

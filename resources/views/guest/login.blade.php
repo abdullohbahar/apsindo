@@ -5,14 +5,6 @@
 @endsection
 
 @push('addons-css')
-    <style>
-        .center-div {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100%;
-        }
-    </style>
 @endpush
 
 @section('content')
