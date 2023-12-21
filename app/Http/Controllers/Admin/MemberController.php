@@ -11,8 +11,17 @@ class MemberController extends Controller
 {
     public function index()
     {
+        // $query = User::with('profile', 'subscribe')->where('role', '!=', 'admin')->orderBy('created_at', 'desc')->get();
+
+        // foreach ($query as $q) {
+        //     $status = $q->subscribe()->orderBy('created_at', 'desc')->first()->payment_status;
+        //     dump($status);
+        // }
+
+        // dd("x");
+
         if (request()->ajax()) {
-            $query = User::with('profile')->where('role', '!=', 'admin')->orderBy('created_at', 'desc')->get();
+            $query = User::with('profile', 'subscribe')->where('role', '!=', 'admin')->orderBy('created_at', 'desc')->get();
 
             return Datatables::of($query)
                 ->addColumn('no_telepon', function ($item) {
@@ -26,6 +35,25 @@ class MemberController extends Controller
                                 <a href="./member/detail/' . $item->id . '" class="btn btn-info">Detail</a>
                                 <a href="./member/detail/' . $item->id . '" class="btn btn-success">Konfirmasi</a>
                             </div>';
+                })
+                ->addColumn('status_pembayaran', function ($item) {
+                    $paymentStatus = $item->subscribe()->orderBy('created_at', 'desc')->first()->payment_status;
+
+                    if ($paymentStatus == 'unpaid') {
+                        $color = 'danger';
+                        $text = 'Unpaid';
+                    } else if ($paymentStatus == 'pending') {
+                        $color = 'warning';
+                        $text = 'Pending';
+                    } else if ($paymentStatus == 'paid') {
+                        $color = 'success';
+                        $text = 'Paid';
+                    } else {
+                        $color = 'secondary';
+                        $text = '';
+                    }
+
+                    return "<span class='badge badge-$color'>$text</span>";
                 })
                 ->addColumn('is_active', function ($item) {
                     if ($item->is_active == 'inactive') {
@@ -44,7 +72,7 @@ class MemberController extends Controller
 
                     return "<span class='badge badge-$color'>$text</span>";
                 })
-                ->rawColumns(['action', 'is_active'])
+                ->rawColumns(['action', 'is_active', 'status_pembayaran'])
                 ->make();
         }
 
