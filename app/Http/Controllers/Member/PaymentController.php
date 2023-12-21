@@ -57,24 +57,28 @@ class PaymentController extends Controller
 
     public function callback(Request $request)
     {
-        $serverKey = config('midtrans.serverKey');
-        $string = $request->order_id;
-        $trimmed_id = substr($string, 0, -2);
+        try {
+            $serverKey = config('midtrans.serverKey');
+            $string = $request->order_id;
+            $trimmed_id = substr($string, 0, -2);
 
-        $hashed = hash("sha512", $trimmed_id . $request->status_code . $request->gross_amount . $serverKey);
+            $hashed = hash("sha512", $trimmed_id . $request->status_code . $request->gross_amount . $serverKey);
 
-        if ($hashed == $request->signature_key) {
-            if ($request->transaction_status == 'capture' || $request->transaction_status == 'settlement') {
-                $subscription = Subscription::find($trimmed_id);
-                $subscription->payment_status = 'paid';
-                $subscription->save();
+            if ($hashed == $request->signature_key) {
+                if ($request->transaction_status == 'capture' || $request->transaction_status == 'settlement') {
+                    $subscription = Subscription::find($trimmed_id);
+                    $subscription->payment_status = 'paid';
+                    $subscription->save();
 
-                // Memperbarui kolom 'is_active' dari model User yang terkait dengan Subscription
-                if ($subscription->user) {
-                    $subscription->user->is_active = 'pending';
-                    $subscription->user->save();
+                    // Memperbarui kolom 'is_active' dari model User yang terkait dengan Subscription
+                    if ($subscription->user) {
+                        $subscription->user->is_active = 'pending';
+                        $subscription->user->save();
+                    }
                 }
             }
+        } catch (\Exception $e) {
+            return $e->getMessage();
         }
     }
 }
