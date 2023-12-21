@@ -63,4 +63,4 @@ Route::prefix('admin')->middleware('admin')->group(function () {
     });
 });
 
-Route::get('/midtrans-callback', [PaymentController::class, 'callback']);
+Route::post('/midtrans-callback', [PaymentController::class, 'callback']);
