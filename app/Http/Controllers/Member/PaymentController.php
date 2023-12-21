@@ -75,6 +75,10 @@ class PaymentController extends Controller
                     $subscription->user->is_active = 'pending';
                     $subscription->user->save();
                 }
+            } else if ($request->transaction_status == 'pending') {
+                $subscription = Subscription::find($trimmed_id);
+                $subscription->payment_status = 'pending';
+                $subscription->save();
             }
         }
     }
