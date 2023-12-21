@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Member;
 use App\Http\Controllers\Controller;
 use App\Models\Subscription;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PaymentController extends Controller
 {
@@ -58,6 +59,8 @@ class PaymentController extends Controller
     public function callback(Request $request)
     {
         try {
+            DB::beginTransaction();
+
             $serverKey = config('midtrans.serverKey');
             $string = $request->order_id;
             $trimmed_id = substr($string, 0, -2);
@@ -77,6 +80,8 @@ class PaymentController extends Controller
                     }
                 }
             }
+
+            DB::commit();
 
             return "sukses";
         } catch (\Exception $e) {
