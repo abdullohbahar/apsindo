@@ -9,6 +9,7 @@ use App\Http\Controllers\Member\DashboardMemberController;
 use App\Http\Controllers\Member\PaymentController;
 use App\Http\Controllers\Member\ProfileMemberController;
 use App\Http\Controllers\Member\TransactionHistoryMemberController;
+use App\Http\Controllers\Midtrans\CallbackController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -35,7 +36,7 @@ Route::prefix('member')->middleware('member')->group(function () {
 
     Route::prefix('payment')->group(function () {
         Route::get('/', [PaymentController::class, 'index'])->name('member.payment.page');
-        Route::get('/payment', [PaymentController::class, 'payment'])->name('member.payment');
+        Route::get('/payment/{id}', [PaymentController::class, 'payment'])->name('member.payment');
     });
 
     Route::prefix('riwayat-pembayaran')->group(function () {
@@ -61,3 +62,5 @@ Route::prefix('admin')->middleware('admin')->group(function () {
         Route::post('/update-langganan', [PaymentSettingController::class, 'store'])->name('update.pengaturan.langganan');
     });
 });
+
+Route::get('/midtrans-callback', [PaymentController::class, 'callback']);

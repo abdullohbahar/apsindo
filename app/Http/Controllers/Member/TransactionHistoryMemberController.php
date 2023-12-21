@@ -27,7 +27,7 @@ class TransactionHistoryMemberController extends Controller
                 })
                 ->addColumn('action', function ($item) {
                     if ($item->payment_status == 'unpaid') {
-                        $html = '<a href="./member/detail/' . $item->id . '" class="btn btn-primary">Bayar</a>';
+                        $html = '<button id="payButton" data-id="' . $item->id . '" class="btn btn-primary">Bayar</button>';
                     } else if ($item->payment_status == 'pending') {
                         $html = '<a href="./member/detail/' . $item->id . '" class="btn btn-warning">Pending</a>';
                     } else if ($item->payment_status == 'paid') {

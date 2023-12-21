@@ -1,7 +1,7 @@
 @extends('member.layout.app')
 
 @section('title')
-    Dashboard
+    Riwayat Pembayaran
 @endsection
 
 @push('addons-css')
@@ -150,5 +150,49 @@
                 },
             ],
         });
+    </script>
+    {{-- midtrans --}}
+    <script script type="text/javascript" src="https://app.sandbox.midtrans.com/snap/snap.js"
+        data-client-key="{{ config('midtrans.clientKey') }}"></script>
+    <script>
+        $("body").on("click", "#payButton", async function() {
+            var id = $(this).data("id")
+            console.log(id);
+
+            try {
+                const response = await fetch('payment/payment/' + id, {
+                    method: 'GET',
+                });
+
+                const token = await response.text();
+
+                console.log(token);
+
+                window.snap.pay(token.replace(/"/g, ''), {
+                    onSuccess: function(result) {
+                        /* You may add your own implementation here */
+                        alert("payment success!");
+                        console.log(result);
+                    },
+                    onPending: function(result) {
+                        /* You may add your own implementation here */
+                        alert("wating your payment!");
+                        console.log(result);
+                    },
+                    onError: function(result) {
+                        /* You may add your own implementation here */
+                        alert("payment failed!");
+                        console.log(result);
+                    },
+                    onClose: function() {
+                        /* You may add your own implementation here */
+                        alert('you closed the popup without finishing the payment');
+                    }
+                })
+
+            } catch (error) {
+                alert(error.message);
+            }
+        })
     </script>
 @endpush
