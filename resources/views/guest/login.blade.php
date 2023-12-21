@@ -63,13 +63,27 @@
                                     <div class="col-sm-12">
                                         <div class="mb-3">
                                             <label for="password" class="form-label">Password</label>
-                                            <input type="password" class="form-control" name="password"
-                                                placeholder="Password" id="password" required>
+                                            <div class="input-group">
+                                                <input type="password" class="form-control" name="password"
+                                                    placeholder="Password" id="password" required>
+                                                <div class="input-group-text" id="view-password">
+                                                    <i class="fa-regular fa-eye" id="icon-password"></i>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-12">
+                                        {!! NoCaptcha::renderJs() !!}
+                                        {!! NoCaptcha::display() !!}
+                                        @if ($errors->has('g-recaptcha-response'))
+                                            <span class="help-block" style="color: red">
+                                                <strong>{{ $errors->first('g-recaptcha-response') }}</strong>
+                                            </span>
+                                        @endif
+                                    </div>
+                                    <div class="col-12">
                                         <button type="submit" class="btn btn-success mt-3"
-                                            style="width: 100%">Login</button>
+                                            style="width: 20vw">Login</button>
                                     </div>
                                     <div class="col-12 mt-3 text-center">
                                         <h6>
@@ -91,4 +105,11 @@
 @endsection
 
 @push('addons-js')
+    <script>
+        $('#view-password').on('click', function() {
+            let input = $(this).parent().find("#password");
+            input.attr('type', input.attr('type') === 'password' ? 'text' : 'password');
+            $("#icon-password").attr('class', input.attr('type') === 'password' ? 'fas fa-eye' : "fas fa-eye-slash")
+        });
+    </script>
 @endpush

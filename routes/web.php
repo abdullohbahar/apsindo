@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\DashboardAdminController;
+use App\Http\Controllers\Admin\HistoryTransactionAdminController;
 use App\Http\Controllers\Admin\MemberController;
 use App\Http\Controllers\Admin\PaymentSettingController;
 use App\Http\Controllers\Guest\LoginController;
@@ -55,6 +56,10 @@ Route::prefix('admin')->middleware('admin')->group(function () {
     Route::prefix('member')->group(function () {
         Route::get('/', [MemberController::class, 'index'])->name('admin.member');
         Route::get('/detail/{id}', [MemberController::class, 'detail'])->name('admin.member.detail');
+    });
+
+    Route::prefix('riwayat')->group(function () {
+        Route::get('/', [HistoryTransactionAdminController::class, 'index'])->name('admin.history');
     });
 
     Route::prefix('settings')->group(function () {

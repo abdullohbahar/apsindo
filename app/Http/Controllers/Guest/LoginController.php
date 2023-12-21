@@ -22,9 +22,11 @@ class LoginController extends Controller
         $request->validate([
             'email' => 'required',
             'password' => 'required',
+            'g-recaptcha-response' => 'required|captcha'
         ], [
             'email.required' => ':attribute harus diisi',
             'password.required' => ':attribute harus diisi',
+            'g-recaptcha-response.required' => 'Recaptcha harus diisi',
         ]);
 
         $auth = [
