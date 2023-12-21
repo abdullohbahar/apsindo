@@ -26,7 +26,8 @@
                                         </div>
                                         <div class="col-9">
                                             <div class="center-div">
-                                                <h4 class="text-white text-center"><b>Registrasi Asosiasi Pendidik Seni
+                                                <h4 class="text-white text-center"><b>Formulir Registrasi Asosiasi Pendidik
+                                                        Seni
                                                         Indonesia</b></h4>
                                             </div>
                                         </div>
@@ -42,7 +43,7 @@
                                         <div class="mb-3">
                                             <label for="" class="form-label">NIDN</label>
                                             <input type="text" class="form-control @error('nidn') is-invalid @enderror"
-                                                value="{{ old('nidn') }}" name="nidn" placeholder="NIDN"
+                                                value="{{ old('nidn') }}" name="nidn" placeholder="Masukkan NIDN"
                                                 id="nidn">
                                             @error('nidn')
                                                 <div class="invalid-feedback">
@@ -122,7 +123,8 @@
                                     <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6">
                                         <div class="mb-3">
                                             <label for="" class="form-label">Alamat</label>
-                                            <textarea name="alamat" class="form-control @error('alamat') is-invalid @enderror" rows="3" placeholder="Alamat">{{ old('alamat') }}</textarea>
+                                            <textarea name="alamat" class="form-control @error('alamat') is-invalid @enderror" rows="3"
+                                                placeholder="Alamat Lengkap Anda Untuk Pengiriman Kartu">{{ old('alamat') }}</textarea>
                                             @error('alamat')
                                                 <div class="invalid-feedback">
                                                     {{ $message }}
