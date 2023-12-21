@@ -24,18 +24,25 @@ class MemberController extends Controller
                 ->addColumn('action', function ($item) {
                     return '<div class="btn-group" role="group" aria-label="Basic example">
                                 <a href="./member/detail/' . $item->id . '" class="btn btn-info">Detail</a>
+                                <a href="./member/detail/' . $item->id . '" class="btn btn-success">Konfirmasi</a>
                             </div>';
                 })
                 ->addColumn('is_active', function ($item) {
                     if ($item->is_active == 'inactive') {
                         $color = 'danger';
+                        $text = 'Inactive';
                     } else if ($item->is_active == 'pending') {
                         $color = 'warning';
+                        $text = 'Pending (Perlu Persetujuan Admin)';
                     } else if ($item->is_active == 'active') {
                         $color = 'success';
+                        $text = 'Active';
+                    } else {
+                        $color = 'secondary';
+                        $text = '';
                     }
 
-                    return "<span class='badge badge-$color'>$item->is_active</span>";
+                    return "<span class='badge badge-$color'>$text</span>";
                 })
                 ->rawColumns(['action', 'is_active'])
                 ->make();
