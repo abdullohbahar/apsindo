@@ -32,7 +32,7 @@ class PaymentController extends Controller
 
         $params = [
             'transaction_details' => [
-                'order_id' => $id . rand(1, 9),
+                'order_id' => $id . '.' . rand(1, 9),
                 'gross_amount' => $subscription->paymentSetting->price
             ],
             'customer_details' => [
@@ -58,11 +58,14 @@ class PaymentController extends Controller
     public function callback(Request $request)
     {
         $serverKey = config('midtrans.serverKey');
-        $hashed = hash("sha512", $request->order_id . $request->status_code . $request->gross_amount . $serverKey);
+        $string = $request->order_id;
+        $trimmed_id = substr($string, 0, -2);
+
+        $hashed = hash("sha512", $trimmed_id . $request->status_code . $request->gross_amount . $serverKey);
 
         if ($hashed == $request->signature_key) {
             if ($request->transaction_status == 'capture' || $request->transaction_status == 'settlement') {
-                $subscription = Subscription::find($request->order_id);
+                $subscription = Subscription::find($trimmed_id);
                 $subscription->update('payment_status', 'paid');
                 $subscription->user->update('is_active', 'pending');
             }
