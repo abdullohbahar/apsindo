@@ -77,6 +77,8 @@ class PaymentController extends Controller
                     }
                 }
             }
+
+            return "sukses";
         } catch (\Exception $e) {
             return $e->getMessage();
         }
