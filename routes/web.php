@@ -62,5 +62,3 @@ Route::prefix('admin')->middleware('admin')->group(function () {
         Route::post('/update-langganan', [PaymentSettingController::class, 'store'])->name('update.pengaturan.langganan');
     });
 });
-
-Route::post('/midtrans-callback', [PaymentController::class, 'callback']);
