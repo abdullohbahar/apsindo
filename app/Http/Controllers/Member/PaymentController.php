@@ -66,8 +66,14 @@ class PaymentController extends Controller
         if ($hashed == $request->signature_key) {
             if ($request->transaction_status == 'capture' || $request->transaction_status == 'settlement') {
                 $subscription = Subscription::find($trimmed_id);
-                $subscription->update('payment_status', 'paid');
-                $subscription->user->update('is_active', 'pending');
+                $subscription->payment_status = 'paid';
+                $subscription->save();
+
+                // Memperbarui kolom 'is_active' dari model User yang terkait dengan Subscription
+                if ($subscription->user) {
+                    $subscription->user->is_active = 'pending';
+                    $subscription->user->save();
+                }
             }
         }
     }
