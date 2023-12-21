@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Member;
 
-use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use App\Models\Subscription;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 
 class PaymentController extends Controller
 {
@@ -66,8 +67,14 @@ class PaymentController extends Controller
 
         if ($hashed == $request->signature_key) {
             if ($request->transaction_status == 'capture' || $request->transaction_status == 'settlement') {
+                $tahunDepan = Carbon::now()->addYear(1)->toDateString();
+
                 $subscription = Subscription::find($trimmed_id);
                 $subscription->payment_status = 'paid';
+                $subscription->date_start = date('Y-m-d');
+                $subscription->date_end = $tahunDepan;
+                $subscription->amount = $request->gross_amount;
+                $subscription->metode_pembayaran = $request->payment_type;
                 $subscription->save();
 
                 // Memperbarui kolom 'is_active' dari model User yang terkait dengan Subscription
