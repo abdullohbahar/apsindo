@@ -6,6 +6,9 @@
 
 @push('addons-css')
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         .select2-selection.select2-selection--single {
             height: 38px !important;
@@ -51,7 +54,8 @@
 
                                 <p class="text-muted text-center">{{ $user->profile?->jabatan }}</p>
 
-                                <a href="#" class="btn btn-primary btn-block"><b>Ubah Password</b></a>
+                                <button type="button" data-toggle="modal" data-target="#passwordModal"
+                                    class="btn btn-primary btn-block"><b>Ubah Password</b></button>
                             </div>
                             <!-- /.card-body -->
                         </div>
@@ -307,11 +311,82 @@
         </section>
         <!-- /.content -->
     </div>
+
+    {{-- modal ubah password --}}
+    <div class="modal fade" id="passwordModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Ubah Password</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('update.password', $user->id) }}" method="POST">
+                        @csrf
+                        @method('PUT')
+                        <div class="row">
+                            <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                                <div class="mb-3">
+                                    <label for="" class="form-label">Password</label>
+                                    <div class="input-group">
+                                        <input type="password"
+                                            class="form-control @error('password') is-invalid @enderror" name="password"
+                                            placeholder="Password" id="password" value="{{ old('password') }}" required
+                                            autocomplete="new-password">
+                                        <div class="input-group-text" id="view-password">
+                                            <i class="fa-regular fa-eye" id="icon-password"></i>
+                                        </div>
+                                    </div>
+                                    @error('password')
+                                        <div class="text-danger">
+                                            <small>{{ $message }}</small>
+                                        </div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                                <div class="mb-3">
+                                    <label for="" class="form-label">Konfirmasi Password</label>
+                                    <div class="input-group">
+                                        <input type="password"
+                                            class="form-control @error('password_confirmation') is-invalid @enderror"
+                                            name="password_confirmation" required placeholder="Konfirmasi Password"
+                                            id="password_confirmation" value="{{ old('password_confirmation') }}">
+                                        <div class="input-group-text" id="view-password-confirmation">
+                                            <i class="fa-regular fa-eye" id="icon-password-confirmation"></i>
+                                        </div>
+                                    </div>
+                                    @error('password_confirmation')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-info">Ubah Password</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @push('addons-js')
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="{{ asset('./guest-assets/js/provinsi.js') }}"></script>
+
+    @if (session()->has('errors'))
+        <script>
+            $("#passwordModal").modal("show")
+        </script>
+    @endif
 
     <script>
         var agama = "{{ old('agama', $user->profile?->agama) }}";
@@ -362,5 +437,21 @@
                 }
             }
         };
+    </script>
+
+
+    <script>
+        $('#view-password').on('click', function() {
+            let input = $(this).parent().find("#password");
+            input.attr('type', input.attr('type') === 'password' ? 'text' : 'password');
+            $("#icon-password").attr('class', input.attr('type') === 'password' ? 'fas fa-eye' : "fas fa-eye-slash")
+        });
+
+        $('#view-password-confirmation').on('click', function() {
+            let input = $(this).parent().find("#password_confirmation");
+            input.attr('type', input.attr('type') === 'password' ? 'text' : 'password');
+            $("#icon-password-confirmation").attr('class', input.attr('type') === 'password' ? 'fas fa-eye' :
+                "fas fa-eye-slash")
+        });
     </script>
 @endpush
