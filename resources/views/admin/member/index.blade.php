@@ -131,4 +131,5 @@
             ],
         });
     </script>
+    <script src="{{ asset('./dashboard-assets/js/confirm.js') }}"></script>
 @endpush

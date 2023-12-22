@@ -31,9 +31,15 @@ class MemberController extends Controller
                     return $item->profile?->nama_lengkap ?? '-';
                 })
                 ->addColumn('action', function ($item) {
+                    if ($item->is_active == 'pending') {
+                        $html = '<button data-id="' . $item->id . '" id="confirm" class="btn btn-success">Konfirmasi</button>';
+                    } else {
+                        $html = '';
+                    }
+
                     return '<div class="btn-group" role="group" aria-label="Basic example">
                                 <a href="./member/detail/' . $item->id . '" class="btn btn-info">Detail</a>
-                                <a href="./member/detail/' . $item->id . '" class="btn btn-success">Konfirmasi</a>
+                                ' . $html . '
                             </div>';
                 })
                 ->addColumn('status_pembayaran', function ($item) {
@@ -93,5 +99,24 @@ class MemberController extends Controller
         ];
 
         return view('admin.member.detail', $data);
+    }
+
+    public function confirmMember($id)
+    {
+        $user = User::findOrFail($id);
+
+        if ($user->is_active == 'pending') {
+            $user->is_active = 'active';
+            $user->save();
+            return response()->json([
+                'status' => 200,
+                'message' => 'OK',
+            ]);
+        } else {
+            return response()->json([
+                'status' => 404,
+                'message' => 'Not Found',
+            ]);
+        }
     }
 }

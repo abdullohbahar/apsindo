@@ -57,6 +57,7 @@ Route::prefix('admin')->middleware('admin')->group(function () {
     Route::prefix('member')->group(function () {
         Route::get('/', [MemberController::class, 'index'])->name('admin.member');
         Route::get('/detail/{id}', [MemberController::class, 'detail'])->name('admin.member.detail');
+        Route::get('/confirm/{id}', [MemberController::class, 'confirmMember'])->name('admin.member.confirm');
     });
 
     Route::prefix('riwayat')->group(function () {
