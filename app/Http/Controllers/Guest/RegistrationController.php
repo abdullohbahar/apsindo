@@ -2,16 +2,19 @@
 
 namespace App\Http\Controllers\Guest;
 
+use Exception;
 use App\Models\User;
 use App\Models\Profile;
+use App\Models\Subscription;
 use Illuminate\Http\Request;
+use App\Models\PaymentSetting;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Models\PaymentSetting;
-use App\Models\Subscription;
-use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use App\Http\Controllers\WhatsappNotification;
+use App\Mail\sendNotifcationNewMemberToAdmin;
 
 class RegistrationController extends Controller
 {
@@ -79,6 +82,17 @@ class RegistrationController extends Controller
             ]);
 
             DB::commit();
+
+            $data = [
+                'message' => 'Halo Admin, Ada Member Baru Nih. Mohon Lakukan Konfirmasi',
+                'phone-number' => '085701223722'
+            ];
+
+            $whatsappNotificationController = new WhatsappNotification();
+
+            $whatsappNotificationController->__invoke($data);
+
+            Mail::to('abdullohbahar@gmail.com')->send(new sendNotifcationNewMemberToAdmin($data));
 
             return redirect()->route('login')->with('successDaftar', 'Berhasil Melakukan Pendaftaran');
         } catch (Exception $e) {

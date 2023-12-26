@@ -11,6 +11,8 @@ use App\Http\Controllers\Member\PaymentController;
 use App\Http\Controllers\Member\ProfileMemberController;
 use App\Http\Controllers\Member\TransactionHistoryMemberController;
 use App\Http\Controllers\Midtrans\CallbackController;
+use App\Mail\sendNotificationConfirmationToMember;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -68,4 +70,9 @@ Route::prefix('admin')->middleware('admin')->group(function () {
         Route::get('/langganan', [PaymentSettingController::class, 'index'])->name('pengaturan.langganan');
         Route::post('/update-langganan', [PaymentSettingController::class, 'store'])->name('update.pengaturan.langganan');
     });
+});
+
+
+Route::get('send', function () {
+    Mail::to('abdullohbahar@gmail.com')->send(new sendNotificationConfirmationToMember());
 });
