@@ -83,16 +83,27 @@ class RegistrationController extends Controller
 
             DB::commit();
 
-            $data = [
+
+            // kirim notif wa ke admin
+            $dataAdmin = [
                 'message' => 'Halo Admin, Ada Member Baru Nih. Mohon Lakukan Konfirmasi',
                 'phone-number' => '085701223722'
             ];
-
             $whatsappNotificationController = new WhatsappNotification();
+            $whatsappNotificationController->__invoke($dataAdmin);
 
-            $whatsappNotificationController->__invoke($data);
+            // kirim notif email ke admin
+            Mail::to('abdullohbahar@gmail.com')->send(new sendNotifcationNewMemberToAdmin($dataAdmin));
 
-            Mail::to('abdullohbahar@gmail.com')->send(new sendNotifcationNewMemberToAdmin($data));
+            // kirim notif wa ke member
+            $dataMember = [
+                'message' => 'Terimakasih Telah Melakukan Pendaftaran. Harap Menunggu Konfirmasi Admin',
+                'phone-number' => $request->no_telepon
+            ];
+            $whatsappNotificationController->__invoke($dataMember);
+
+            // kirim notif email ke member
+            Mail::to($request->email)->send(new sendNotifcationNewMemberToAdmin($dataMember));
 
             return redirect()->route('login')->with('successDaftar', 'Berhasil Melakukan Pendaftaran');
         } catch (Exception $e) {
