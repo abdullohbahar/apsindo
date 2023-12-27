@@ -85,19 +85,21 @@ class RegistrationController extends Controller
 
 
             // kirim notif wa ke admin
-            $dataAdmin = [
-                'message' => 'Halo Admin, Ada Member Baru Nih. Mohon Lakukan Konfirmasi',
-                'phone-number' => '085701223722'
-            ];
+            // $dataAdmin = [
+            //     'subject' => 'Pengguna Baru',
+            //     'message' => 'Halo Admin, Ada Member Baru Nih.',
+            //     'phone-number' => '085701223722'
+            // ];
             $whatsappNotificationController = new WhatsappNotification();
-            $whatsappNotificationController->__invoke($dataAdmin);
+            // $whatsappNotificationController->__invoke($dataAdmin);
 
-            // kirim notif email ke admin
-            Mail::to('abdullohbahar@gmail.com')->send(new sendNotifcationNewMemberToAdmin($dataAdmin));
+            // // kirim notif email ke admin
+            // Mail::to('abdullohbahar@gmail.com')->send(new sendNotifcationNewMemberToAdmin($dataAdmin));
 
             // kirim notif wa ke member
             $dataMember = [
-                'message' => 'Terimakasih Telah Melakukan Pendaftaran. Harap Menunggu Konfirmasi Admin',
+                'subject' => 'Pengguna Baru',
+                'message' => 'Terimakasih Telah Melakukan Pendaftaran. Harap Lakukan Pembayaran',
                 'phone-number' => $request->no_telepon
             ];
             $whatsappNotificationController->__invoke($dataMember);

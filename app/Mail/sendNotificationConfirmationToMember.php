@@ -16,9 +16,11 @@ class sendNotificationConfirmationToMember extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public $data;
+
+    public function __construct($data)
     {
-        //
+        $this->data = $data;
     }
 
     /**
@@ -27,7 +29,7 @@ class sendNotificationConfirmationToMember extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Selamat Anda Telah Menjadi Anggota Asosiasi Pendidik Seni Indonesia',
+            subject: $this->data['subject'],
         );
     }
 

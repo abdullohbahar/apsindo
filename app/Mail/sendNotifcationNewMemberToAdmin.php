@@ -30,7 +30,7 @@ class sendNotifcationNewMemberToAdmin extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Pendaftar Baru',
+            subject: $this->data['subject'],
         );
     }
 

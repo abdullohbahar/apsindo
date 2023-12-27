@@ -1,2 +1,15 @@
-Selamat Anda Telah Menjadi Anggota Asosiasi Pendidik Seni Indonesia. Silahkan Melakukan Login Di Link Berikut
-https://member.apsindo.org
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    {{ $data['message'] }}
+</body>
+
+</html>

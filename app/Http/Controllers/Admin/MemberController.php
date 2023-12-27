@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+use DataTables;
 use App\Models\User;
 use Illuminate\Http\Request;
-use DataTables;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Mail;
+use App\Http\Controllers\WhatsappNotification;
+use App\Mail\sendNotificationConfirmationToMember;
 
 class MemberController extends Controller
 {
@@ -103,7 +106,20 @@ class MemberController extends Controller
 
     public function confirmMember($id)
     {
-        $user = User::findOrFail($id);
+        $user = User::with('profile')->findOrFail($id);
+
+        $datamember = [
+            'subject' => 'Selamat Anda Telah Menjadi Anggota Asosiasi Pendidik Seni Indonesia',
+            'message' => 'Selamat Anda Telah Menjadi Anggota Asosiasi Pendidik Seni Indonesia. Silahkan Melakukan Login Di Link Berikut https://member.apsindo.org',
+            'phone-number' => $user->profile->no_telepon
+        ];
+
+        // kirim notif email ke member
+        Mail::to($user->email)->send(new sendNotificationConfirmationToMember($datamember));
+
+        // kirim notif wa ke member
+        $whatsappNotificationController = new WhatsappNotification();
+        $whatsappNotificationController->__invoke($datamember);
 
         if ($user->is_active == 'pending') {
             $user->is_active = 'active';

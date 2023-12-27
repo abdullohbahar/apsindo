@@ -7,6 +7,9 @@ use App\Models\Subscription;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\sendNotifcationNewMemberToAdmin;
+use App\Http\Controllers\WhatsappNotification;
 
 class PaymentController extends Controller
 {
@@ -82,6 +85,29 @@ class PaymentController extends Controller
                     $subscription->user->is_active = 'pending';
                     $subscription->user->save();
                 }
+
+                // kirim notif wa ke admin
+                $dataAdmin = [
+                    'subject' => 'Pembayaran',
+                    'message' => 'Halo Admin, Ada Member Telah Melakukan Pembayaran Nih, Harap Lakukan Konfirmasi User',
+                    'phone-number' => '085701223722'
+                ];
+                $whatsappNotificationController = new WhatsappNotification();
+                $whatsappNotificationController->__invoke($dataAdmin);
+
+                // kirim notif email ke admin
+                Mail::to('abdullohbahar@gmail.com')->send(new sendNotifcationNewMemberToAdmin($dataAdmin));
+
+                // kirim notif wa ke member
+                $dataMember = [
+                    'subject' => 'Pembayaran Berhasil',
+                    'message' => 'Terimakasih Telah Melakukan Pembayaran. Harap Menunggu Konfirmasi Admin',
+                    'phone-number' => $request->no_telepon
+                ];
+                $whatsappNotificationController->__invoke($dataMember);
+
+                // kirim notif email ke member
+                Mail::to($request->email)->send(new sendNotifcationNewMemberToAdmin($dataMember));
             } else if ($request->transaction_status == 'pending') {
                 $subscription = Subscription::find($trimmed_id);
                 $subscription->payment_status = 'pending';
