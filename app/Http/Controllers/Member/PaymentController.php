@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\sendNotifcationNewMemberToAdmin;
 use App\Http\Controllers\WhatsappNotification;
+use App\Models\PaymentSetting;
 
 class PaymentController extends Controller
 {
@@ -70,20 +71,47 @@ class PaymentController extends Controller
 
         if ($hashed == $request->signature_key) {
             if ($request->transaction_status == 'capture' || $request->transaction_status == 'settlement') {
-                $tahunDepan = Carbon::now()->addYear(1)->toDateString();
 
+                // get how many year
+                $year = PaymentSetting::first();
+
+                // get subscription
                 $subscription = Subscription::find($trimmed_id);
-                $subscription->payment_status = 'paid';
-                $subscription->date_start = date('Y-m-d');
-                $subscription->date_end = $tahunDepan;
-                $subscription->amount = $request->gross_amount;
-                $subscription->metode_pembayaran = $request->payment_type;
-                $subscription->save();
 
-                // Memperbarui kolom 'is_active' dari model User yang terkait dengan Subscription
-                if ($subscription->user) {
-                    $subscription->user->is_active = 'pending';
-                    $subscription->user->save();
+                // get user id by last subscription
+                $lastSubscription = Subscription::where('user_id', $subscription->user_id)
+                    ->where('payment_status', 'paid')
+                    ->orderBy('created_at', 'desc')
+                    ->first();
+
+                if ($lastSubscription != null) {
+                    $tahunDepan = Carbon::parse($lastSubscription->date_start)->addYear($year->date_range)->toDateString();
+
+                    $subscription->payment_status = 'paid';
+                    $subscription->date_start = $lastSubscription->date_end;
+                    $subscription->date_end = $tahunDepan;
+                    $subscription->amount = '50000';
+                    $subscription->metode_pembayaran = 'BCA';
+                    $subscription->save();
+
+                    if ($subscription->user) {
+                        $subscription->user->is_active = 'active';
+                        $subscription->user->save();
+                    }
+                } else {
+                    $tahunDepan = Carbon::now()->addYear($year->date_range)->toDateString();
+
+                    $subscription->payment_status = 'paid';
+                    $subscription->date_start = date('Y-m-d');
+                    $subscription->date_end = $tahunDepan;
+                    $subscription->amount = '50000';
+                    $subscription->metode_pembayaran = 'BCA';
+                    $subscription->save();
+
+                    if ($subscription->user) {
+                        $subscription->user->is_active = 'pending';
+                        $subscription->user->save();
+                    }
                 }
 
                 // kirim notif wa ke admin

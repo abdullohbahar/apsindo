@@ -2,6 +2,7 @@
 
 use Carbon\Carbon;
 use App\Models\Subscription;
+use App\Models\PaymentSetting;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WhatsappNotification;
@@ -77,41 +78,47 @@ Route::prefix('admin')->middleware('admin')->group(function () {
 
 
 Route::get('test', function () {
-    $oneMonthFromNow = now()->addMonth();
+    // get how many year
+    $year = PaymentSetting::first();
 
-    $subscriptions = Subscription::with('user.profile', 'paymentSetting')
-        ->whereDate('date_end', '=', $oneMonthFromNow->toDateString())
+    // get subscription
+    $subscription = Subscription::find('9afe2350-328d-49ed-acd2-00272f681559');
+
+    // get user id by last subscription
+    $lastSubscription = Subscription::where('user_id', $subscription->user_id)
+        ->where('payment_status', 'paid')
         ->orderBy('created_at', 'desc')
-        ->get();
+        ->first();
 
-    $parseDate = Carbon::parse($oneMonthFromNow)->format('d-m-Y');
+    if ($lastSubscription != null) {
+        $tahunDepan = Carbon::parse($lastSubscription->date_start)->addYear($year->date_range)->toDateString();
 
-    foreach ($subscriptions as $subscription) {
-        $whatsappNotificationController = new WhatsappNotification();
-        $dataMember = [
-            'subject' => 'Pengguna Baru',
-            'message' => 'Masa Aktif Member Asosiasi Pendidik Seni Indonesia Anda Akan Berakhir Pada Tanggal ' . $parseDate . ' Harap Lakukan Perpanjangan',
-            'phone-number' => $subscription->user->profile->no_telepon
-        ];
-        $whatsappNotificationController->__invoke($dataMember);
+        $subscription->payment_status = 'paid';
+        $subscription->date_start = $lastSubscription->date_end;
+        $subscription->date_end = $tahunDepan;
+        $subscription->amount = '50000';
+        $subscription->metode_pembayaran = 'BCA';
+        $subscription->save();
 
-        // lakukan pengecekan apakah data subscription sudah ada
-        // jika belum ada maka tambahkan data
-        $cekSubs = Subscription::where('user_id', $subscription->user->id)
-            ->where('payment_status', 'unpaid')
-            ->where('information', 'Perpanjang')
-            ->first();
+        if ($subscription->user) {
+            $subscription->user->is_active = 'active';
+            $subscription->user->save();
+        }
+    } else {
+        $tahunDepan = Carbon::now()->addYear($year->date_range)->toDateString();
 
-        if ($cekSubs == null) {
-            Subscription::create([
-                'user_id' => $subscription->user->id,
-                'information' => 'Perpanjang',
-                'payment_settings_id' => 1,
-                'metode_pembayaran' => '-',
-                'payment_status' => 'unpaid'
-            ]);
+        $subscription->payment_status = 'paid';
+        $subscription->date_start = date('Y-m-d');
+        $subscription->date_end = $tahunDepan;
+        $subscription->amount = '50000';
+        $subscription->metode_pembayaran = 'BCA';
+        $subscription->save();
+
+        if ($subscription->user) {
+            $subscription->user->is_active = 'pending';
+            $subscription->user->save();
         }
     }
 
-    dd($subscription);
+    dd($lastSubscription);
 });
