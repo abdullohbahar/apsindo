@@ -7,6 +7,8 @@ use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx\Rels;
 
 class ProfileMemberController extends Controller
 {
@@ -91,5 +93,18 @@ class ProfileMemberController extends Controller
         } catch (Exception $e) {
             return redirect()->back()->with('error', $e->getMessage());
         }
+    }
+
+    public function updatePassword($id, Request $request)
+    {
+        $request->validate([
+            'password' => 'required|min:6|confirmed',
+        ]);
+
+        User::where('id', $id)->update([
+            'password' => Hash::make($request->password)
+        ]);
+
+        return redirect()->back()->with('success', 'Berhasil Mengubah Password');
     }
 }

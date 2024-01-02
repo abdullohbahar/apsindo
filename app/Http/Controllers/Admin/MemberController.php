@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+use DataTables;
 use App\Models\User;
 use Illuminate\Http\Request;
-use DataTables;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Mail;
+use App\Http\Controllers\WhatsappNotification;
+use App\Mail\sendNotificationConfirmationToMember;
 
 class MemberController extends Controller
 {
@@ -31,9 +34,15 @@ class MemberController extends Controller
                     return $item->profile?->nama_lengkap ?? '-';
                 })
                 ->addColumn('action', function ($item) {
+                    if ($item->is_active == 'pending') {
+                        $html = '<button data-id="' . $item->id . '" id="confirm" class="btn btn-success">Konfirmasi</button>';
+                    } else {
+                        $html = '';
+                    }
+
                     return '<div class="btn-group" role="group" aria-label="Basic example">
                                 <a href="./member/detail/' . $item->id . '" class="btn btn-info">Detail</a>
-                                <a href="./member/detail/' . $item->id . '" class="btn btn-success">Konfirmasi</a>
+                                ' . $html . '
                             </div>';
                 })
                 ->addColumn('status_pembayaran', function ($item) {
@@ -93,5 +102,37 @@ class MemberController extends Controller
         ];
 
         return view('admin.member.detail', $data);
+    }
+
+    public function confirmMember($id)
+    {
+        $user = User::with('profile')->findOrFail($id);
+
+        $datamember = [
+            'subject' => 'Selamat Anda Telah Menjadi Anggota Asosiasi Pendidik Seni Indonesia',
+            'message' => 'Selamat Anda Telah Menjadi Anggota Asosiasi Pendidik Seni Indonesia. Silahkan Melakukan Login Di Link Berikut https://member.apsindo.org',
+            'phone-number' => $user->profile->no_telepon
+        ];
+
+        // kirim notif email ke member
+        Mail::to($user->email)->send(new sendNotificationConfirmationToMember($datamember));
+
+        // kirim notif wa ke member
+        $whatsappNotificationController = new WhatsappNotification();
+        $whatsappNotificationController->__invoke($datamember);
+
+        if ($user->is_active == 'pending') {
+            $user->is_active = 'active';
+            $user->save();
+            return response()->json([
+                'status' => 200,
+                'message' => 'OK',
+            ]);
+        } else {
+            return response()->json([
+                'status' => 404,
+                'message' => 'Not Found',
+            ]);
+        }
     }
 }

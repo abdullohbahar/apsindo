@@ -11,6 +11,8 @@ use App\Http\Controllers\Member\PaymentController;
 use App\Http\Controllers\Member\ProfileMemberController;
 use App\Http\Controllers\Member\TransactionHistoryMemberController;
 use App\Http\Controllers\Midtrans\CallbackController;
+use App\Mail\sendNotificationConfirmationToMember;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -48,6 +50,7 @@ Route::prefix('member')->middleware('member')->group(function () {
 Route::prefix('profile')->middleware('auth')->group(function () {
     Route::get('/', [ProfileMemberController::class, 'index'])->name('member.profile');
     Route::put('/update/{id}', [ProfileMemberController::class, 'update'])->name('member.profile.update');
+    Route::put('update-password/{id}', [ProfileMemberController::class, 'updatePassword'])->name('update.password');
 });
 
 Route::prefix('admin')->middleware('admin')->group(function () {
@@ -56,6 +59,7 @@ Route::prefix('admin')->middleware('admin')->group(function () {
     Route::prefix('member')->group(function () {
         Route::get('/', [MemberController::class, 'index'])->name('admin.member');
         Route::get('/detail/{id}', [MemberController::class, 'detail'])->name('admin.member.detail');
+        Route::get('/confirm/{id}', [MemberController::class, 'confirmMember'])->name('admin.member.confirm');
     });
 
     Route::prefix('riwayat')->group(function () {
@@ -66,4 +70,9 @@ Route::prefix('admin')->middleware('admin')->group(function () {
         Route::get('/langganan', [PaymentSettingController::class, 'index'])->name('pengaturan.langganan');
         Route::post('/update-langganan', [PaymentSettingController::class, 'store'])->name('update.pengaturan.langganan');
     });
+});
+
+
+Route::get('send', function () {
+    Mail::to('abdullohbahar@gmail.com')->send(new sendNotificationConfirmationToMember());
 });

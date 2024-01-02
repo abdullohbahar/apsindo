@@ -2,16 +2,19 @@
 
 namespace App\Http\Controllers\Guest;
 
+use Exception;
 use App\Models\User;
 use App\Models\Profile;
+use App\Models\Subscription;
 use Illuminate\Http\Request;
+use App\Models\PaymentSetting;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Models\PaymentSetting;
-use App\Models\Subscription;
-use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use App\Http\Controllers\WhatsappNotification;
+use App\Mail\sendNotifcationNewMemberToAdmin;
 
 class RegistrationController extends Controller
 {
@@ -79,6 +82,30 @@ class RegistrationController extends Controller
             ]);
 
             DB::commit();
+
+
+            // kirim notif wa ke admin
+            // $dataAdmin = [
+            //     'subject' => 'Pengguna Baru',
+            //     'message' => 'Halo Admin, Ada Member Baru Nih.',
+            //     'phone-number' => '085701223722'
+            // ];
+            $whatsappNotificationController = new WhatsappNotification();
+            // $whatsappNotificationController->__invoke($dataAdmin);
+
+            // // kirim notif email ke admin
+            // Mail::to('abdullohbahar@gmail.com')->send(new sendNotifcationNewMemberToAdmin($dataAdmin));
+
+            // kirim notif wa ke member
+            $dataMember = [
+                'subject' => 'Pengguna Baru',
+                'message' => 'Terimakasih Telah Melakukan Pendaftaran. Harap Lakukan Pembayaran',
+                'phone-number' => $request->no_telepon
+            ];
+            $whatsappNotificationController->__invoke($dataMember);
+
+            // kirim notif email ke member
+            Mail::to($request->email)->send(new sendNotifcationNewMemberToAdmin($dataMember));
 
             return redirect()->route('login')->with('successDaftar', 'Berhasil Melakukan Pendaftaran');
         } catch (Exception $e) {

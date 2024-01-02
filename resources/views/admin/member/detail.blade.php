@@ -10,6 +10,12 @@
         .select2-selection.select2-selection--single {
             height: 38px !important;
         }
+
+        .center-div {
+            display: flex;
+            align-items: center;
+            height: 100%;
+        }
     </style>
 @endpush
 
@@ -50,19 +56,6 @@
                                 <p class="text-muted text-center">{{ $user->email }}</p>
 
                                 <p class="text-muted text-center">{{ $user->profile->jabatan }}</p>
-
-                                @php
-                                    if ($user->is_active == 'inactive') {
-                                        $color = 'danger';
-                                    } elseif ($user->is_active == 'pending') {
-                                        $color = 'warning';
-                                    } elseif ($user->is_active == 'active') {
-                                        $color = 'success';
-                                    }
-                                @endphp
-                                <div class="text-center">
-                                    <span class='badge badge-{{ $color }}'>{{ $user->is_active }}</span>
-                                </div>
                             </div>
                             <!-- /.card-body -->
                         </div>
@@ -127,6 +120,63 @@
                                             <td class="font-weight-bold" style="width: 20%">Alamat</td>
                                             <td>: {{ $user->profile?->jabatan ?? '-' }}</td>
                                         </tr>
+                                        <tr>
+                                            @php
+                                                $paymentStatus = $user
+                                                    ->subscribe()
+                                                    ->orderBy('created_at', 'desc')
+                                                    ->first()->payment_status;
+
+                                                if ($paymentStatus == 'unpaid') {
+                                                    $color = 'danger';
+                                                    $text = 'Unpaid';
+                                                } elseif ($paymentStatus == 'pending') {
+                                                    $color = 'warning';
+                                                    $text = 'Pending';
+                                                } elseif ($paymentStatus == 'paid') {
+                                                    $color = 'success';
+                                                    $text = 'Paid';
+                                                } else {
+                                                    $color = 'secondary';
+                                                    $text = '';
+                                                }
+                                            @endphp
+                                            <td class="font-weight-bold">
+                                                Status Pembayaran
+                                            </td>
+                                            <td class="center-div">
+                                                : &nbsp;<span style="font-size: 12pt;"
+                                                    class='badge badge-{{ $color }}'>{{ $text }}</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            @php
+                                                if ($user->is_active == 'inactive') {
+                                                    $color = 'danger';
+                                                    $text = 'Inactive';
+                                                } elseif ($user->is_active == 'pending') {
+                                                    $color = 'warning';
+                                                    $text = 'Pending (Menunggu Persetujuan Admin)';
+                                                } elseif ($user->is_active == 'active') {
+                                                    $color = 'success';
+                                                    $text = 'Aktif';
+                                                }
+                                            @endphp
+                                            <td class="font-weight-bold">
+                                                Status Member
+                                            </td>
+                                            <td>
+                                                : &nbsp; <span style="font-size: 12pt"
+                                                    class='badge badge-{{ $color }}'>{{ $text }}</span>
+
+                                                @if ($user->is_active == 'pending')
+                                                    <button id="confirm" data-id="{{ $user->id }}"
+                                                        class="btn btn-success btn-sm">
+                                                        Klik Untuk Menyetujui
+                                                    </button>
+                                                @endif
+                                            </td>
+                                        </tr>
                                     </thead>
                                 </table>
                             </div><!-- /.card-body -->
@@ -143,57 +193,5 @@
 @endsection
 
 @push('addons-js')
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    <script src="{{ asset('./guest-assets/js/provinsi.js') }}"></script>
-
-    <script>
-        var agama = "{{ old('agama', $user->profile->agama) }}";
-        var provinsi = "{{ old('provinsi', $user->profile->provinsi) }}";
-
-        $("#agama").val(agama)
-
-        setTimeout(() => {
-            // Memeriksa apakah elemen sudah ada
-            if ($(`#select2-provinsi-container`).length) {
-                var optionToSelect = $(
-                    `#provinsi option:contains('${provinsi}')`
-                );
-
-                $(`#provinsi`).val(optionToSelect.val()).trigger("change");
-
-                // Mengubah isi (teks) dari elemen <span>
-                $(`#select2-provinsi-container`)
-                    .text(provinsi)
-                    .attr("title", provinsi);
-
-                $(`#provinsi`).trigger("change");
-            }
-        }, 1000);
-    </script>
-
-    <script>
-        imageUpload.onchange = (evt) => {
-            const [file] = imageUpload.files;
-            if (file) {
-                // Batasan ukuran file (2MB)
-                const maxSizeInBytes = 2 * 1024 * 1024; // 2MB
-                if (file.size <= maxSizeInBytes) {
-                    // Batasan jenis file (PNG, JPG, JPEG)
-                    const allowedExtensions = ["png", "jpg", "jpeg", "webp"];
-                    const fileExtension = file.name.split(".").pop().toLowerCase();
-                    if (allowedExtensions.includes(fileExtension)) {
-                        imagePreview.src = URL.createObjectURL(file);
-                    } else {
-                        alert(
-                            "Jenis file yang diunggah tidak diizinkan. Harap pilih file dengan format PNG, JPG, atau JPEG."
-                        );
-                        imageUpload.value = null; // Menghapus file yang dipilih
-                    }
-                } else {
-                    alert("Ukuran file terlalu besar. Harap pilih file dengan ukuran maksimal 2MB.");
-                    imageUpload.value = null; // Menghapus file yang dipilih
-                }
-            }
-        };
-    </script>
+    <script src="{{ asset('./dashboard-assets/js/confirm.js') }}"></script>
 @endpush
