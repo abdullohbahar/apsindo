@@ -2,7 +2,12 @@
 
 namespace App\Console\Commands;
 
+use Carbon\Carbon;
+use App\Models\Subscription;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\sendNotifcationNewMemberToAdmin;
+use App\Http\Controllers\WhatsappNotification;
 
 class DuePaymentNotification extends Command
 {
@@ -25,5 +30,42 @@ class DuePaymentNotification extends Command
      */
     public function handle()
     {
+        $oneMonthFromNow = now()->addMonth();
+
+        $subscriptions = Subscription::with('user.profile', 'paymentSetting')
+            ->whereDate('date_end', '=', $oneMonthFromNow->toDateString())
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $parseDate = Carbon::parse($oneMonthFromNow)->format('d-m-Y');
+
+        foreach ($subscriptions as $subscription) {
+            $whatsappNotificationController = new WhatsappNotification();
+            $dataMember = [
+                'subject' => 'Perpanjang Langganan Member Asosiasi Pendidik Seni Indonesia',
+                'message' => 'Masa Aktif Member Asosiasi Pendidik Seni Indonesia Anda Akan Berakhir Pada Tanggal ' . $parseDate . ' Harap Lakukan Perpanjangan',
+                'phone-number' => $subscription->user->profile->no_telepon
+            ];
+            $whatsappNotificationController->__invoke($dataMember);
+
+            Mail::to($subscription->user->email)->send(new sendNotifcationNewMemberToAdmin($dataMember));
+
+            // lakukan pengecekan apakah data subscription sudah ada
+            // jika belum ada maka tambahkan data
+            $cekSubs = Subscription::where('user_id', $subscription->user->id)
+                ->where('payment_status', 'unpaid')
+                ->where('information', 'Perpanjang')
+                ->first();
+
+            if ($cekSubs == null) {
+                Subscription::create([
+                    'user_id' => $subscription->user->id,
+                    'information' => 'Perpanjang',
+                    'payment_settings_id' => 1,
+                    'metode_pembayaran' => '-',
+                    'payment_status' => 'unpaid'
+                ]);
+            }
+        }
     }
 }
