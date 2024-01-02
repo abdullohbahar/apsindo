@@ -90,8 +90,8 @@ class PaymentController extends Controller
                     $subscription->payment_status = 'paid';
                     $subscription->date_start = $lastSubscription->date_end;
                     $subscription->date_end = $tahunDepan;
-                    $subscription->amount = '50000';
-                    $subscription->metode_pembayaran = 'BCA';
+                    $subscription->amount = $request->gross_amount;
+                    $subscription->metode_pembayaran = $request->payment_type;
                     $subscription->save();
 
                     if ($subscription->user) {
@@ -104,8 +104,8 @@ class PaymentController extends Controller
                     $subscription->payment_status = 'paid';
                     $subscription->date_start = date('Y-m-d');
                     $subscription->date_end = $tahunDepan;
-                    $subscription->amount = '50000';
-                    $subscription->metode_pembayaran = 'BCA';
+                    $subscription->amount = $request->gross_amount;
+                    $subscription->metode_pembayaran = $request->payment_type;
                     $subscription->save();
 
                     if ($subscription->user) {
