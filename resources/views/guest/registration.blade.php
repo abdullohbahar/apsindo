@@ -186,9 +186,9 @@
                                             class="rounded-circle mt-3" id="imagePreview"
                                             style="width: 150px; height: 150px;">
                                     </div>
-                                    <div class="col-12 mb-5 mt-3">
+                                    <div class="col-12 mb-5 mt-3 text-end">
                                         <button type="submit" class="btn btn-success mt-5"
-                                            style="width: 20vw">Daftar</button>
+                                            style="width: 25vw">Daftar</button>
                                     </div>
                                     <div class="col-12 mt-3 text-center">
                                         <h6>
