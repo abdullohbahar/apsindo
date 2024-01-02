@@ -12,7 +12,12 @@ class HistoryTransactionAdminController extends Controller
     public function index()
     {
         if (request()->ajax()) {
-            $query = Subscription::with('user.profile', 'paymentSetting')->orderBy('created_at', 'desc')->get();
+            $query = Subscription::with('user.profile', 'paymentSetting')
+                ->whereHas('user', function ($query) {
+                    $query->where('role', '!=', 'admin');
+                })
+                ->orderBy('created_at', 'desc')
+                ->get();
 
             return Datatables::of($query)
                 ->addColumn('action', function ($item) {

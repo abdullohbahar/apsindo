@@ -1,19 +1,22 @@
 <?php
 
-use App\Http\Controllers\Admin\DashboardAdminController;
-use App\Http\Controllers\Admin\HistoryTransactionAdminController;
-use App\Http\Controllers\Admin\MemberController;
-use App\Http\Controllers\Admin\PaymentSettingController;
-use App\Http\Controllers\Guest\LoginController;
-use App\Http\Controllers\Guest\RegistrationController;
-use App\Http\Controllers\Member\DashboardMemberController;
-use App\Http\Controllers\Member\PaymentController;
-use App\Http\Controllers\Member\ProfileMemberController;
-use App\Http\Controllers\Member\TransactionHistoryMemberController;
-use App\Http\Controllers\Midtrans\CallbackController;
-use App\Mail\sendNotificationConfirmationToMember;
+use Carbon\Carbon;
+use App\Models\Subscription;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\WhatsappNotification;
+use App\Http\Controllers\Guest\LoginController;
+use App\Http\Controllers\Admin\MemberController;
+use App\Http\Controllers\Member\PaymentController;
+use App\Mail\sendNotificationConfirmationToMember;
+use App\Http\Controllers\Midtrans\CallbackController;
+use App\Http\Controllers\Guest\RegistrationController;
+use App\Http\Controllers\Admin\DashboardAdminController;
+use App\Http\Controllers\Admin\PaymentSettingController;
+use App\Http\Controllers\Member\ProfileMemberController;
+use App\Http\Controllers\Member\DashboardMemberController;
+use App\Http\Controllers\Admin\HistoryTransactionAdminController;
+use App\Http\Controllers\Member\TransactionHistoryMemberController;
 
 /*
 |--------------------------------------------------------------------------
@@ -73,6 +76,42 @@ Route::prefix('admin')->middleware('admin')->group(function () {
 });
 
 
-Route::get('send', function () {
-    Mail::to('abdullohbahar@gmail.com')->send(new sendNotificationConfirmationToMember());
+Route::get('test', function () {
+    $oneMonthFromNow = now()->addMonth();
+
+    $subscriptions = Subscription::with('user.profile', 'paymentSetting')
+        ->whereDate('date_end', '=', $oneMonthFromNow->toDateString())
+        ->orderBy('created_at', 'desc')
+        ->get();
+
+    $parseDate = Carbon::parse($oneMonthFromNow)->format('d-m-Y');
+
+    foreach ($subscriptions as $subscription) {
+        $whatsappNotificationController = new WhatsappNotification();
+        $dataMember = [
+            'subject' => 'Pengguna Baru',
+            'message' => 'Masa Aktif Member Asosiasi Pendidik Seni Indonesia Anda Akan Berakhir Pada Tanggal ' . $parseDate . ' Harap Lakukan Perpanjangan',
+            'phone-number' => $subscription->user->profile->no_telepon
+        ];
+        $whatsappNotificationController->__invoke($dataMember);
+
+        // lakukan pengecekan apakah data subscription sudah ada
+        // jika belum ada maka tambahkan data
+        $cekSubs = Subscription::where('user_id', $subscription->user->id)
+            ->where('payment_status', 'unpaid')
+            ->where('information', 'Perpanjang')
+            ->first();
+
+        if ($cekSubs == null) {
+            Subscription::create([
+                'user_id' => $subscription->user->id,
+                'information' => 'Perpanjang',
+                'payment_settings_id' => 1,
+                'metode_pembayaran' => '-',
+                'payment_status' => 'unpaid'
+            ]);
+        }
+    }
+
+    dd($subscription);
 });
