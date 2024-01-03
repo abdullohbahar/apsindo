@@ -90,8 +90,8 @@ class PaymentController extends Controller
                     $subscription->payment_status = 'paid';
                     $subscription->date_start = $lastSubscription->date_end;
                     $subscription->date_end = $tahunDepan;
-                    $subscription->amount = '50000';
-                    $subscription->metode_pembayaran = 'BCA';
+                    $subscription->amount = $request->gross_amount;
+                    $subscription->metode_pembayaran = $request->payment_type;
                     $subscription->save();
 
                     if ($subscription->user) {
@@ -104,8 +104,8 @@ class PaymentController extends Controller
                     $subscription->payment_status = 'paid';
                     $subscription->date_start = date('Y-m-d');
                     $subscription->date_end = $tahunDepan;
-                    $subscription->amount = '50000';
-                    $subscription->metode_pembayaran = 'BCA';
+                    $subscription->amount = $request->gross_amount;
+                    $subscription->metode_pembayaran = $request->payment_type;
                     $subscription->save();
 
                     if ($subscription->user) {
@@ -118,13 +118,13 @@ class PaymentController extends Controller
                 $dataAdmin = [
                     'subject' => 'Pembayaran',
                     'message' => 'Halo Admin, Ada Member Telah Melakukan Pembayaran Nih, Harap Lakukan Konfirmasi User',
-                    'phone-number' => '085701223722'
+                    'phone-number' => env('PHONE_ADMIN')
                 ];
                 $whatsappNotificationController = new WhatsappNotification();
                 $whatsappNotificationController->__invoke($dataAdmin);
 
                 // kirim notif email ke admin
-                Mail::to('abdullohbahar@gmail.com')->send(new sendNotifcationNewMemberToAdmin($dataAdmin));
+                Mail::to(env('MAIL_ADMIN'))->send(new sendNotifcationNewMemberToAdmin($dataAdmin));
 
                 // kirim notif wa ke member
                 $dataMember = [

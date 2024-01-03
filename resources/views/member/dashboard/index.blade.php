@@ -37,13 +37,23 @@
                                 <h5 class="m-0">Selamat Datang</h5>
                             </div>
                             <div class="card-body">
-                                <h5 class="card-text text-capitalize">
-                                    Anda Belum Aktif Menjadi Anggota, Silahkan melakukan pembayaran agar menjadi anggota
-                                    aktif dan mendapat kartu anggota digital
-                                </h5>
+                                @if ($subscribe->payment_status == 'unpaid')
+                                    @if ($subscribe->information == 'Langganan Awal')
+                                        <h5 class="card-text text-capitalize">
+                                            Anda Belum Aktif Menjadi Anggota, Silahkan melakukan pembayaran agar menjadi
+                                            anggota
+                                            aktif dan mendapat kartu anggota digital
+                                        </h5>
+                                    @else
+                                        <h5 class="card-text text-capitalize">
+                                            Masa Aktif Menjadi Anggota APSINDO akan segera berakhir pada tanggal
+                                            {{ $subscribe->date_end }}. Segera Lakukan Perpanjangan
+                                        </h5>
+                                    @endif
 
-                                <a href="{{ route('riwayat') }}" class="btn btn-info mt-2">Lakukan
-                                    Pembayaran</a>
+                                    <a href="{{ route('riwayat') }}" class="btn btn-info mt-2">Lakukan
+                                        Pembayaran</a>
+                                @endif
                             </div>
                         </div>
                     </div>

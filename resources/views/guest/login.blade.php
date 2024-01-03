@@ -11,7 +11,7 @@
     <section class="mb-5">
         <div class="container mt-5">
             <div class="row justify-content-center">
-                <div class="col-sm-12 col-md-7">
+                <div class="col-sm-12 col-md-4">
                     <div class="card">
                         <div class="card-header" style="background-color: #3C49B5">
                             <div class="row">
@@ -25,8 +25,8 @@
                                         </div>
                                         <div class="col-9">
                                             <div class="center-div">
-                                                <h4 class="text-white text-center"><b>Login Asosiasi Pendidik Seni
-                                                        Indonesia</b></h4>
+                                                <h5 class="text-white text-center"><b>Login Asosiasi Pendidik Seni
+                                                        Indonesia</b></h5>
                                             </div>
                                         </div>
                                     </div>
@@ -83,7 +83,7 @@
                                     </div>
                                     <div class="col-12">
                                         <button type="submit" class="btn btn-success mt-3"
-                                            style="width: 20vw">Login</button>
+                                            style="width: 100%">Login</button>
                                     </div>
                                     <div class="col-12 mt-3 text-center">
                                         <h6>
