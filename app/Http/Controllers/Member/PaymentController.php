@@ -118,13 +118,13 @@ class PaymentController extends Controller
                 $dataAdmin = [
                     'subject' => 'Pembayaran',
                     'message' => 'Halo Admin, Ada Member Telah Melakukan Pembayaran Nih, Harap Lakukan Konfirmasi User',
-                    'phone-number' => '085701223722'
+                    'phone-number' => env('PHONE_ADMIN')
                 ];
                 $whatsappNotificationController = new WhatsappNotification();
                 $whatsappNotificationController->__invoke($dataAdmin);
 
                 // kirim notif email ke admin
-                Mail::to('abdullohbahar@gmail.com')->send(new sendNotifcationNewMemberToAdmin($dataAdmin));
+                Mail::to(env('MAIL_ADMIN'))->send(new sendNotifcationNewMemberToAdmin($dataAdmin));
 
                 // kirim notif wa ke member
                 $dataMember = [
