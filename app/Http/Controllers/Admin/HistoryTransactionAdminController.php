@@ -38,7 +38,7 @@ class HistoryTransactionAdminController extends Controller
                     return $item->user->email;
                 })
                 ->addColumn('no_telepon', function ($item) {
-                    return $item->user->email;
+                    return $item->user->profile->no_telepon;
                 })
                 ->addColumn('payment_status', function ($item) {
                     if ($item->payment_status == 'unpaid') {

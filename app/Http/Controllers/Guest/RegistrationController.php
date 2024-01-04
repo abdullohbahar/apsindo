@@ -31,14 +31,18 @@ class RegistrationController extends Controller
     {
         $request->validate([
             'nidn' => 'unique:profiles,nidn',
-            'email' => 'required:users,email',
+            'email' => 'required|unique:users,email',
             'nama_lengkap' => 'required',
-            'no_telepon' => 'required:profiles,no_telepon',
+            'no_telepon' => 'required|unique:profiles,no_telepon',
             'password' => 'required|min:6|confirmed',
             'alamat' => 'required',
             'provinsi' => 'required',
             'universitas' => 'required',
             'foto' => 'required',
+        ], [
+            'nidn.unique' => 'NIDN Sudah Dipakai',
+            'email.unique' => 'Email Sudah Dipakai',
+            'no_telepon.unique' => 'Nomor Telepon Sudah Dipakai',
         ]);
 
         try {
