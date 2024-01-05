@@ -68,57 +68,11 @@ Route::prefix('admin')->middleware('admin')->group(function () {
 
     Route::prefix('riwayat')->group(function () {
         Route::get('/', [HistoryTransactionAdminController::class, 'index'])->name('admin.history');
+        Route::get('/export', [HistoryTransactionAdminController::class, 'export'])->name('admin.export.history');
     });
 
     Route::prefix('settings')->group(function () {
         Route::get('/langganan', [PaymentSettingController::class, 'index'])->name('pengaturan.langganan');
         Route::post('/update-langganan', [PaymentSettingController::class, 'store'])->name('update.pengaturan.langganan');
     });
-});
-
-
-Route::get('test', function () {
-    // get how many year
-    $year = PaymentSetting::first();
-
-    // get subscription
-    $subscription = Subscription::find('9afe2350-328d-49ed-acd2-00272f681559');
-
-    // get user id by last subscription
-    $lastSubscription = Subscription::where('user_id', $subscription->user_id)
-        ->where('payment_status', 'paid')
-        ->orderBy('created_at', 'desc')
-        ->first();
-
-    if ($lastSubscription != null) {
-        $tahunDepan = Carbon::parse($lastSubscription->date_start)->addYear($year->date_range)->toDateString();
-
-        $subscription->payment_status = 'paid';
-        $subscription->date_start = $lastSubscription->date_end;
-        $subscription->date_end = $tahunDepan;
-        $subscription->amount = '50000';
-        $subscription->metode_pembayaran = 'BCA';
-        $subscription->save();
-
-        if ($subscription->user) {
-            $subscription->user->is_active = 'active';
-            $subscription->user->save();
-        }
-    } else {
-        $tahunDepan = Carbon::now()->addYear($year->date_range)->toDateString();
-
-        $subscription->payment_status = 'paid';
-        $subscription->date_start = date('Y-m-d');
-        $subscription->date_end = $tahunDepan;
-        $subscription->amount = '50000';
-        $subscription->metode_pembayaran = 'BCA';
-        $subscription->save();
-
-        if ($subscription->user) {
-            $subscription->user->is_active = 'pending';
-            $subscription->user->save();
-        }
-    }
-
-    dd($lastSubscription);
 });
