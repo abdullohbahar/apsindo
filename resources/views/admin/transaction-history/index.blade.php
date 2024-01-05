@@ -38,7 +38,8 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="card-tools">
-                            <button class="btn btn-info">Export</button>
+                            <button class="btn btn-info" id="export" data-toggle="modal"
+                                data-target="#exportModal">Export</button>
                         </div>
                     </div>
                     <div class="card-body">
@@ -70,6 +71,8 @@
         </div>
         <!-- /.content -->
     </div>
+
+    @include('admin.transaction-history.modal-export')
 @endsection
 
 @push('addons-js')
