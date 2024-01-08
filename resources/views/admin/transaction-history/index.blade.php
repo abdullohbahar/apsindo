@@ -50,14 +50,14 @@
                                         <tr>
                                             <th>No</th>
                                             <th>Nama Lengkap</th>
-                                            <th>Email</th>
+                                            {{-- <th>Email</th> --}}
                                             <th>No Telepon</th>
                                             <th>Keterangan</th>
                                             <th>Tanggal Langganan</th>
                                             <th>Tanggal Berakhir</th>
                                             <th>Metode Pembayaran</th>
                                             <th>Status Pembayaran</th>
-                                            <th>Aksi</th>
+                                            {{-- <th>Aksi</th> --}}
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -119,10 +119,10 @@
                     data: "nama_lengkap",
                     name: "nama_lengkap",
                 },
-                {
-                    data: "email",
-                    name: "email",
-                },
+                // {
+                //     data: "email",
+                //     name: "email",
+                // },
                 {
                     data: "no_telepon",
                     name: "no_telepon",
@@ -148,10 +148,10 @@
                     data: "payment_status",
                     name: "payment_status",
                 },
-                {
-                    data: "action",
-                    name: "action",
-                },
+                // {
+                //     data: "action",
+                //     name: "action",
+                // },
             ],
         });
     </script>
