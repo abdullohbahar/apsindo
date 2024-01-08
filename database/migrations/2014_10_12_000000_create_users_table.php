@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('password');
             $table->enum('role', ['admin', 'member']);
             $table->string('reset_password_token')->nullable();
-            $table->enum('is_active', ['pending', 'active', 'inactive']);
+            $table->enum('is_active', ['pending', 'active', 'inactive', 'expired']);
             $table->timestamps();
         });
     }

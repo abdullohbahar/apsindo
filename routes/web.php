@@ -18,6 +18,7 @@ use App\Http\Controllers\Member\ProfileMemberController;
 use App\Http\Controllers\Member\DashboardMemberController;
 use App\Http\Controllers\Admin\HistoryTransactionAdminController;
 use App\Http\Controllers\Member\TransactionHistoryMemberController;
+use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
