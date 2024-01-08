@@ -75,6 +75,9 @@ class MemberController extends Controller
                     } else if ($item->is_active == 'active') {
                         $color = 'success';
                         $text = 'Active';
+                    } else if ($item->is_active == 'expired') {
+                        $color = 'secondary';
+                        $text = 'Expired';
                     } else {
                         $color = 'secondary';
                         $text = '';
