@@ -9,12 +9,21 @@ use DataTables;
 
 class HistoryTransactionAdminController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         if (request()->ajax()) {
+            $keterangan = $request->keterangan;
+            $status = $request->status;
+
             $query = Subscription::with('user.profile', 'paymentSetting')
                 ->whereHas('user', function ($query) {
                     $query->where('role', '!=', 'admin');
+                })
+                ->when($keterangan, function ($query) use ($keterangan) {
+                    $query->where('information', $keterangan);
+                })
+                ->when($status, function ($query) use ($status) {
+                    $query->where('payment_status', $status);
                 })
                 ->orderBy('created_at', 'desc')
                 ->get();

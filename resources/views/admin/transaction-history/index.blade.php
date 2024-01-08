@@ -37,10 +37,47 @@
             <div class="container-fluid">
                 <div class="card">
                     <div class="card-header">
-                        <div class="card-tools">
-                            <button class="btn btn-info" id="export" data-toggle="modal"
-                                data-target="#exportModal">Export</button>
-                        </div>
+                        <input type="hidden" value="{{ request()->keterangan }}" id="valKeterangan">
+                        <input type="hidden" value="{{ request()->status }}" id="valStatus">
+                        <form>
+                            <div class="row">
+                                <div class="col-sm-12 col-md-3 mt-2">
+                                    <select name="keterangan" class="form-control" style="width: 100%" id="">
+                                        <option value="">-- Filter Keterangan --</option>
+                                        <option {{ request()->keterangan == 'Perpanjang' ? 'selected' : '' }}
+                                            value="Perpanjang">Perpanjang</option>
+                                        <option {{ request()->keterangan == 'Langganan Awal' ? 'selected' : '' }}
+                                            value="Langganan Awal">Langganan Awal</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-12 col-md-3 mt-2">
+                                    <select name="status" class="form-control" style="width: 100%" id="">
+                                        <option value="">-- Filter Status Pembayaran --</option>
+                                        <option {{ request()->status == 'unpaid' ? 'selected' : '' }} value="unpaid">Unpaid
+                                        </option>
+                                        <option {{ request()->status == 'paid' ? 'selected' : '' }} value="paid">Paid
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-12 col-md-3 mt-2">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <button type="submit" class="btn btn-primary"
+                                                style="width: 100%">Filter</button>
+                                        </div>
+                                        <div class="col-6">
+                                            <a href="{{ route('admin.history') }}" class="btn btn-secondary"
+                                                style="width: 100%">Reset Filter</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-3 mt-2 text-right">
+                                    <button type="button" class="btn btn-warning" id="export" data-toggle="modal"
+                                        data-target="#exportModal">Export</button>
+                                </div>
+                            </div>
+                        </form>
+
                     </div>
                     <div class="card-body">
                         <div class="row">
@@ -91,6 +128,9 @@
     <script src="{{ asset('dashboard-assets/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
 
     <script>
+        var keterangan = $("#valKeterangan").val();
+        var status = $("#valStatus").val();
+
         $("#table1").DataTable({
             processing: true,
             serverSide: true,
@@ -103,6 +143,10 @@
             responsive: true,
             ajax: {
                 url: "{!! url()->current() !!}",
+                data: {
+                    status: status,
+                    keterangan: keterangan
+                }
             },
             columns: [{
                     title: "No",
