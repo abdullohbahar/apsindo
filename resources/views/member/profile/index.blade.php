@@ -54,25 +54,27 @@
 
                                 <p class="text-muted text-center">{{ $user->profile?->jabatan }}</p>
 
-                                @php
-                                    \Carbon\Carbon::setLocale('id');
-                                @endphp
-                                <p class="text-center">Tanggal Langganan:
-                                    <br>
-                                    @if ($sub->date_start)
-                                        <b>{{ \Carbon\Carbon::parse($sub->date_start)->translatedFormat('j F Y') }}</b>
-                                    @else
-                                        -
-                                    @endif
-                                </p>
-                                <p class="text-center">Tanggal Berakhir:
-                                    <br>
-                                    @if ($sub->date_end)
-                                        <b>{{ \Carbon\Carbon::parse($sub->date_end)->translatedFormat('j F Y') }}</b>
-                                    @else
-                                        -
-                                    @endif
-                                </p>
+                                @if (auth()->user()->role == 'member')
+                                    @php
+                                        \Carbon\Carbon::setLocale('id');
+                                    @endphp
+                                    <p class="text-center">Tanggal Langganan:
+                                        <br>
+                                        @if ($sub->date_start)
+                                            <b>{{ \Carbon\Carbon::parse($sub->date_start)->translatedFormat('j F Y') }}</b>
+                                        @else
+                                            -
+                                        @endif
+                                    </p>
+                                    <p class="text-center">Tanggal Berakhir:
+                                        <br>
+                                        @if ($sub->date_end)
+                                            <b>{{ \Carbon\Carbon::parse($sub->date_end)->translatedFormat('j F Y') }}</b>
+                                        @else
+                                            -
+                                        @endif
+                                    </p>
+                                @endif
 
                                 <button type="button" data-toggle="modal" data-target="#passwordModal"
                                     class="btn btn-primary btn-block"><b>Ubah Password</b></button>
