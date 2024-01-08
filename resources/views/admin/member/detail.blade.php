@@ -42,7 +42,7 @@
         <section class="content">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <!-- Profile Image -->
                         <div class="card card-primary card-outline">
                             <div class="card-body box-profile">
@@ -56,6 +56,27 @@
                                 <p class="text-muted text-center">{{ $user->email }}</p>
 
                                 <p class="text-muted text-center">{{ $user->profile->jabatan }}</p>
+
+                                @php
+                                    \Carbon\Carbon::setLocale('id');
+                                @endphp
+                                <p class="text-center">Tanggal Langganan:
+                                    <br>
+                                    @if ($sub->date_start)
+                                        <b>{{ \Carbon\Carbon::parse($sub->date_start)->translatedFormat('j F Y') }}</b>
+                                    @else
+                                        -
+                                    @endif
+                                </p>
+                                <p class="text-center">Tanggal Berakhir:
+                                    <br>
+                                    @if ($sub->date_end)
+                                        <b>{{ \Carbon\Carbon::parse($sub->date_end)->translatedFormat('j F Y') }}</b>
+                                    @else
+                                        -
+                                    @endif
+                                </p>
+
                             </div>
                             <!-- /.card-body -->
                         </div>
@@ -63,7 +84,7 @@
 
                     </div>
                     <!-- /.col -->
-                    <div class="col-md-9">
+                    <div class="col-md-8">
                         <div class="card">
                             <div class="card-body">
                                 <table class="table">

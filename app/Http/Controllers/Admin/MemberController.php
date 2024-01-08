@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use DataTables;
 use App\Models\User;
+use App\Models\Subscription;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
@@ -96,9 +97,12 @@ class MemberController extends Controller
     {
         $user = User::with('profile')->findOrFail($id);
 
+        $sub = Subscription::where('user_id', $id)->where('payment_status', 'paid')->orderBy('created_at', 'desc')->first();
+
         $data = [
             'active' => 'member',
-            'user' => $user
+            'user' => $user,
+            'sub' => $sub
         ];
 
         return view('admin.member.detail', $data);
