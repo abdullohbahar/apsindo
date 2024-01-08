@@ -46,7 +46,7 @@
                                             <th>Nama Lengkap</th>
                                             <th>Email</th>
                                             <th>No Telepon</th>
-                                            <th>Status Pembayaran</th>
+                                            {{-- <th>Status Pembayaran</th> --}}
                                             <th>Status Member</th>
                                             <th>Aksi</th>
                                         </tr>
@@ -116,10 +116,10 @@
                     data: "no_telepon",
                     name: "no_telepon",
                 },
-                {
-                    data: "status_pembayaran",
-                    name: "status_pembayaran",
-                },
+                // {
+                //     data: "status_pembayaran",
+                //     name: "status_pembayaran",
+                // },
                 {
                     data: "is_active",
                     name: "is_active",

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Member;
 
 use App\Http\Controllers\Controller;
+use App\Models\Subscription;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
@@ -17,9 +18,12 @@ class ProfileMemberController extends Controller
         $id = auth()->user()->id;
         $user = User::with('profile')->findOrFail($id);
 
+        $sub = Subscription::where('user_id', $id)->where('payment_status', 'paid')->orderBy('created_at', 'desc')->first();
+
         $data = [
             'active' => 'profile',
-            'user' => $user
+            'user' => $user,
+            'sub' => $sub
         ];
 
         return view('member.profile.index', $data);
